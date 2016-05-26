@@ -1,0 +1,269 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C4C8CB"
+    tools:context="com.perlagloria.activity.fragment.FixtureMatchInfoFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="15dp">
+
+            <TextView
+                android:id="@+id/nextGameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/next_game"
+                android:textColor="@color/colorPrimary"
+                android:textSize="23sp" />
+
+            <TextView
+                android:id="@+id/versusTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nextGameTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="VS"
+                android:textColor="@color/colorPrimary"
+                android:textSize="35sp" />
+
+            <ImageView
+                android:id="@+id/team1LogoImgView"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:layout_below="@+id/nextGameTV"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/versusTV"
+                android:layout_toStartOf="@+id/versusTV"
+                android:src="@drawable/shirt"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/team2LogoImgView"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:layout_alignTop="@+id/team1LogoImgView"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/versusTV"
+                android:layout_toRightOf="@+id/versusTV"
+                android:src="@drawable/shirt"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/team1NameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/team1LogoImgView"
+                android:layout_alignLeft="@+id/team1LogoImgView"
+                android:layout_alignRight="@+id/team1LogoImgView"
+                android:layout_alignStart="@+id/team1LogoImgView"
+                android:layout_below="@+id/team1LogoImgView"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@+id/versusTV"
+                android:layout_toStartOf="@+id/versusTV"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/team2NameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/team2LogoImgView"
+                android:layout_alignLeft="@+id/team2LogoImgView"
+                android:layout_alignRight="@+id/team2LogoImgView"
+                android:layout_alignStart="@+id/team2LogoImgView"
+                android:layout_below="@+id/team2LogoImgView"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/versusTV"
+                android:layout_toRightOf="@+id/versusTV"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/suspendedTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/team1NameTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorAlert"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/dateNumberTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/suspendedTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/dateOfMatchTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateNumberTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/timeOfMatchTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateOfMatchTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/fieldNumberTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/timeOfMatchTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/mapCodeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fieldNumberTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/horizDividerView"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignEnd="@+id/team2LogoImgView"
+                android:layout_alignLeft="@+id/team1LogoImgView"
+                android:layout_alignRight="@+id/team2LogoImgView"
+                android:layout_alignStart="@+id/team1LogoImgView"
+                android:layout_below="@+id/mapCodeTV"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#6E7072"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/homeTeamImgView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignTop="@+id/vertDividerView"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/homeGoalsTV"
+                android:layout_toStartOf="@+id/nextGameTV"
+                android:src="@drawable/home_team"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/awayTeamImgView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignBottom="@+id/awayGoalsTV"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/nextGameTV"
+                android:layout_toRightOf="@+id/awayGoalsTV"
+                android:src="@drawable/away_team"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/vertDividerView"
+                android:layout_width="2dp"
+                android:layout_height="70dp"
+                android:layout_below="@+id/horizDividerView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="#6E7072"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeGoalsTV"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/homeTeamImgView"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_toLeftOf="@+id/vertDividerView"
+                android:layout_toStartOf="@+id/vertDividerView"
+                android:background="@drawable/circle_shape"
+                android:gravity="center_vertical|center_horizontal"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/awayGoalsTV"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/homeTeamImgView"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/vertDividerView"
+                android:layout_toRightOf="@+id/vertDividerView"
+                android:background="@drawable/circle_shape"
+                android:enabled="false"
+                android:gravity="center_vertical|center_horizontal"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

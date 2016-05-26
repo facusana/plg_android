@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">Per La Gloria</string>
+
+    <!-- Choose another team -->
+    <string name="action_choose_another_team">Seleccionar nuevo equipo</string>
+
+    <string name="server_host">http://perlagloria.com</string>
+
+    <!-- Check your Internet connection -->
+    <string name="check_connection_dialog">Comprueba tu conexión a internet</string>
+
+    <!-- CLOSE -->
+    <string name="check_connection_dialog_close">Cerrar</string>
+
+    <!-- Are you sure you want to exit? -->
+    <string name="sure_exit_dialog">¿Seguro que quieres salir?</string>
+
+    <!-- YES -->
+    <string name="sure_exit_dialog_yes">Si</string>
+
+    <!-- NO -->
+    <string name="sure_exit_dialog_no">No</string>
+
+    <!-- Loading data -->
+    <string name="loading_data_progress_dialog">Cargando datos</string>
+
+    <!-- No information from the server -->
+    <string name="no_info_from_server">No hay información desde el servidor</string>
+
+    <!-- No information for next match-->
+    <string name="no_info_for_next_match">No hay información del próximo partido</string>
+
+    <!-- Not available-->
+    <string name="not_available">No disponible</string>
+
+    <!-- Server response error -->
+    <string name="server_response_error">Error de respuesta del servidor</string>
+
+    <!-- CHOOSE YOUR TEAM -->
+    <string name="toolbar_choose_team_title">SELECCIONAR DATOS</string>
+
+    <!-- Championship -->
+    <string name="championship">Campeonato</string>
+
+    <!-- Tournament -->
+    <string name="tournament">Torneo</string>
+
+    <!-- Division -->
+    <string name="division">División</string>
+
+    <!-- Next game -->
+    <string name="next_game">Próximo Partido</string>
+
+    <!-- Map Code -->
+    <string name="field_number">Cancha: %1$s</string>
+
+    <!-- Map Code -->
+    <string name="map_code">Sede: %1$s</string>
+
+    <!-- Map -->
+    <string name="fixture_match_map">Mapa del Predio</string>
+
+    <!-- My team -->
+    <string name="my_team">MI EQUIPO</string>
+
+    <!-- Statistics -->
+    <string name="statistics">ESTADÍSTICAS</string>
+
+    <!-- POSITIONS -->
+    <string name="positions">POSICIONES</string>
+
+    <!-- TEAM -->
+    <string name="team">EQUIPO</string>
+
+    <!-- table columns name -->
+    <string name="points">Pts</string>
+    <string name="wins">PG</string>
+    <string name="ties">PE</string>
+    <string name="losses">PP</string>
+    <string name="goalsFor">GF</string>
+    <string name="goalsAgainst">GC</string>
+
+</resources>
