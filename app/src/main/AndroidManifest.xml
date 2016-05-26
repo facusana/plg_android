@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.perlagloria"
-    android:versionCode="3"
-    android:versionName="2.1.0">
+    package="com.perlagloria">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.Base">
         <activity
             android:name="com.perlagloria.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -28,11 +26,13 @@
         <activity
             android:name="com.perlagloria.activity.ChooseTeamActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
         <activity
             android:name="com.perlagloria.activity.TeamActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
     </application>
 
 </manifest>

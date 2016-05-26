@@ -2,10 +2,12 @@
 <resources>
 
 
-    <color name="colorPrimary">#384C71</color>
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
+    <color name="colorPrimary">#385183</color>
+    <color name="colorPrimaryDark">#003b69</color>
     <color name="colorAccent">#F50057</color>
     <color name="colorAlert">#FE0010</color>
+
+    <color name="white">#ffffff</color>
 
     <color name="colorSelectedItem">#0566C0</color>
     <color name="colorUnselectedItem">#636363</color>
