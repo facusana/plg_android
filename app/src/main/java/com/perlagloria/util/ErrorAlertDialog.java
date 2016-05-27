@@ -7,13 +7,20 @@ import com.android.volley.VolleyError;
 import com.perlagloria.R;
 
 public class ErrorAlertDialog {
-    public static final String NO_CONNECTION = "No connection could be established when performing a request";
-    public static final String TIMED_OUT = "Connection or the socket timed out";
-    public static final String SERVER_ERROR = "Server responded with an error response";
-    public static final String PARSE_ERROR = "Server's response could not be parsed";
-    public static final String NETWORK_ERROR = "There was a network error when performing a request";
-    public static final String AUTH_FAILURE_ERROR = "There was an authentication failure when performing a request";
-    public static final String UNKNOWN_ERROR = "Unknown error";
+    //    public static final String NO_CONNECTION = "No connection could be established when performing a request";
+//    public static final String TIMED_OUT = "Connection or the socket timed out";
+//    public static final String SERVER_ERROR = "Server responded with an error response";
+//    public static final String PARSE_ERROR = "Server's response could not be parsed";
+//    public static final String NETWORK_ERROR = "There was a network error when performing a request";
+//    public static final String AUTH_FAILURE_ERROR = "There was an authentication failure when performing a request";
+//    public static final String UNKNOWN_ERROR = "Unknown error";
+    public static final String NO_CONNECTION = "La conexión no puede establecerse";
+    public static final String TIMED_OUT = "La conexión agotó el tiempo de espera";
+    public static final String SERVER_ERROR = "El servidor ha respondido con error.";
+    public static final String PARSE_ERROR = "La respuesta del servidor no puede ser interpretada.";
+    public static final String NETWORK_ERROR = "Hubo un error en la red al hacer la petición.";
+    public static final String AUTH_FAILURE_ERROR = "Hubo una falla de autenticación al hacer la petición.";
+    public static final String UNKNOWN_ERROR = "Error desconocido.";
 
     public static void show(Activity parent, String message) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(parent, R.style.AppCompatAlertDialogStyle);
