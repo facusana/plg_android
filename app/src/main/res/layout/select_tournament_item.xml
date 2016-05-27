@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tournItemLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tournItemValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tournItemCheckBox"
+        android:layout_alignBottom="@+id/check_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/tournItemCheckBox"
+        android:layout_alignTop="@+id/check_icon"
         android:layout_marginEnd="5dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="5dp"
         android:layout_marginStart="25dp"
-        android:layout_toLeftOf="@+id/tournItemCheckBox"
-        android:layout_toStartOf="@+id/tournItemCheckBox"
+        android:layout_toLeftOf="@+id/check_icon"
+        android:layout_toStartOf="@+id/check_icon"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:text=""
-        android:textSize="17sp" />
+        android:textSize="18sp" />
 
-    <CheckBox
-        android:id="@+id/tournItemCheckBox"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+    <ImageView
+        android:id="@+id/check_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/btn_check_selector"
-        android:button="@null"
-        android:checked="false" />
+        android:tint="@color/colorUnselectedItem"
+        app:srcCompat="@drawable/ic_check"
+        tools:src="@drawable/ic_check" />
 
     <View
         android:id="@+id/horizDividerView"

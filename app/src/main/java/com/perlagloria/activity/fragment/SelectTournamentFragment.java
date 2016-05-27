@@ -23,6 +23,7 @@ import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 
 import org.json.JSONArray;
@@ -45,12 +46,13 @@ public class SelectTournamentFragment extends Fragment implements TournamentList
     private int customerId;
     private String customerName;
 
-    private LinearLayoutManager mLayoutManager;
     private RecyclerView tournamentListRecView;
     private TournamentListAdapter tournamentListAdapter;
     private ArrayList<Tournament> tournamentArrayList;
 
+    private TextView champTextView;
     private TextView champValueTextView;
+    private TextView tournTextView;
     private TextView tournValueTextView;
 
     private OnTournamentPassListener tournamentPassListener;  //pass selected tournament back to the activity
@@ -88,20 +90,25 @@ public class SelectTournamentFragment extends Fragment implements TournamentList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_select_tournament, container, false);
+        champTextView = (TextView) rootView.findViewById(R.id.champTextView);
         champValueTextView = (TextView) rootView.findViewById(R.id.champValueTextView);
         champValueTextView.setText(customerName);
+        tournTextView = (TextView) rootView.findViewById(R.id.tournTextView);
         tournValueTextView = (TextView) rootView.findViewById(R.id.tournValueTextView);
 
         ((ChooseTeamActivity) getActivity()).setToolbarTitle(getString(R.string.toolbar_choose_team_title));
 
         tournamentArrayList = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(getActivity());
-
         tournamentListRecView = (RecyclerView) rootView.findViewById(R.id.container_tournaments);
-        tournamentListAdapter = new TournamentListAdapter(tournamentArrayList, this);
+        tournamentListAdapter = new TournamentListAdapter(getActivity(), tournamentArrayList, this);
         tournamentListRecView.setAdapter(tournamentListAdapter);
         tournamentListRecView.setItemAnimator(null);
-        tournamentListRecView.setLayoutManager(mLayoutManager);
+        tournamentListRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        champTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        champValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        tournTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        tournValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
 
         loadTournamentInfo();
 

@@ -15,8 +15,7 @@
         android:gravity="center"
         android:text="@string/championship"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/champValueTextView"
@@ -33,7 +32,6 @@
         android:layout_toRightOf="@+id/champTextView"
         android:gravity="end"
         android:singleLine="true"
-        android:text=""
         android:textColor="@color/colorSelectedItem"
         android:textSize="20sp" />
 
@@ -49,8 +47,7 @@
         android:gravity="center"
         android:text="@string/tournament"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tournValueTextView"
@@ -65,7 +62,6 @@
         android:layout_marginRight="15dp"
         android:gravity="end"
         android:singleLine="true"
-        android:text=""
         android:textColor="@color/colorSelectedItem"
         android:textSize="20sp" />
 

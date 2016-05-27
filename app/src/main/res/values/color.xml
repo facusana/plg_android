@@ -9,8 +9,8 @@
 
     <color name="white">#ffffff</color>
 
-    <color name="colorSelectedItem">#0566C0</color>
-    <color name="colorUnselectedItem">#636363</color>
+    <color name="colorSelectedItem">#0365c0</color>
+    <color name="colorUnselectedItem">#898989</color>
 
     <color name="tabSelected">#FFFFFF</color>
     <color name="tabNormal">#bfbfbf</color>

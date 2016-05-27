@@ -23,6 +23,7 @@ import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 
 import org.json.JSONArray;
@@ -34,11 +35,11 @@ import java.util.ArrayList;
 public class SelectChampionshipFragment extends Fragment implements ChampionshipListAdapter.OnCheckboxCheckedListener {
     private static final String LOADING_CUSTOMERS_LIST_TAG = "customers_list_loading";
 
-    private LinearLayoutManager mLayoutManager;
     private RecyclerView championshipListRecView;
     private ChampionshipListAdapter championshipListAdapter;
     private ArrayList<Customer> championshipArrayList;
 
+    private TextView champTextView;
     private TextView champValueTextView;
 
     private OnChampionshipPassListener championshipPassListener;  //pass selected championship back to the activity
@@ -55,18 +56,21 @@ public class SelectChampionshipFragment extends Fragment implements Championship
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_select_championship, container, false);
+
+        champTextView = (TextView) rootView.findViewById(R.id.champTextView);
         champValueTextView = (TextView) rootView.findViewById(R.id.champValueTextView);
 
         ((ChooseTeamActivity) getActivity()).setToolbarTitle(getString(R.string.toolbar_choose_team_title));
 
         championshipArrayList = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(getActivity());
-
         championshipListRecView = (RecyclerView) rootView.findViewById(R.id.container_championships);
-        championshipListAdapter = new ChampionshipListAdapter(championshipArrayList, this);
+        championshipListAdapter = new ChampionshipListAdapter(getActivity(), championshipArrayList, this);
         championshipListRecView.setAdapter(championshipListAdapter);
         championshipListRecView.setItemAnimator(null);
-        championshipListRecView.setLayoutManager(mLayoutManager);
+        championshipListRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        champTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        champValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
 
         loadChampionshipInfo();
 

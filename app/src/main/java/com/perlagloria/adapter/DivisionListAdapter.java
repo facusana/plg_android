@@ -1,26 +1,31 @@
 package com.perlagloria.adapter;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.perlagloria.R;
 import com.perlagloria.model.Division;
+import com.perlagloria.util.FontManager;
 
 import java.util.Collections;
 import java.util.List;
 
 public class DivisionListAdapter extends RecyclerView.Adapter<DivisionListAdapter.MyViewHolder> {
-    private List<Division> data = Collections.emptyList();
-    private int lastSelectedIndex = -1;
-    private OnCheckboxCheckedListener onCheckboxCheckedListener;
 
-    public DivisionListAdapter(List<Division> data, OnCheckboxCheckedListener onCheckboxCheckedListener) {
-        super();
+    private Context context;
+    private List<Division> data = Collections.emptyList();
+    private OnCheckboxCheckedListener onCheckboxCheckedListener;
+    private int lastSelectedIndex = -1;
+
+    public DivisionListAdapter(Context context, List<Division> data, OnCheckboxCheckedListener onCheckboxCheckedListener) {
+        this.context = context;
         this.data = data;
         this.onCheckboxCheckedListener = onCheckboxCheckedListener;
     }
@@ -41,25 +46,12 @@ public class DivisionListAdapter extends RecyclerView.Adapter<DivisionListAdapte
         Division current = data.get(position);
 
         holder.divisItemValue.setText(current.getName());
-        holder.divisItemCheckBox.setChecked(current.isSelected());
 
-        class ItemClickListener implements View.OnClickListener {
-            @Override
-            public void onClick(View v) {
-                if (lastSelectedIndex != -1) {    //unselect last selected item
-                    data.get(lastSelectedIndex).setIsSelected(false);
-                    notifyItemChanged(lastSelectedIndex);
-                }
-                data.get(position).setIsSelected(true);
-                notifyItemChanged(position);
-
-                lastSelectedIndex = position;
-                onCheckboxCheckedListener.onCheckboxChecked(getItem(position));  //send message back to fragment (to change selected championship title)
-            }
+        if (current.isSelected()) {
+            holder.checkIcon.setColorFilter(ContextCompat.getColor(context, R.color.colorSelectedItem));
+        } else {
+            holder.checkIcon.setColorFilter(ContextCompat.getColor(context, R.color.colorUnselectedItem));
         }
-
-        holder.divisItemLayout.setOnClickListener(new ItemClickListener());
-        holder.divisItemCheckBox.setOnClickListener(new ItemClickListener());
 
         //holder.dividerView.setVisibility((data.size() - 1 == position) ? View.GONE : View.VISIBLE);
     }
@@ -81,19 +73,38 @@ public class DivisionListAdapter extends RecyclerView.Adapter<DivisionListAdapte
         void onCheckboxChecked(Division division);
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout divisItemLayout;
-        TextView divisItemValue;
-        CheckBox divisItemCheckBox;
-        View dividerView;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        private RelativeLayout divisItemLayout;
+        private TextView divisItemValue;
+        private ImageView checkIcon;
+        private View dividerView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             divisItemLayout = (RelativeLayout) itemView.findViewById(R.id.divisItemLayout);
             divisItemValue = (TextView) itemView.findViewById(R.id.divisItemValue);
-            divisItemCheckBox = (CheckBox) itemView.findViewById(R.id.divisItemCheckBox);
+            checkIcon = (ImageView) itemView.findViewById(R.id.check_icon);
             dividerView = itemView.findViewById(R.id.horizDividerView);
+
+            divisItemValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, context));
+
+            divisItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+                    if (lastSelectedIndex != -1) {    //unselect last selected item
+                        data.get(lastSelectedIndex).setIsSelected(false);
+                        notifyItemChanged(lastSelectedIndex);
+                    }
+                    data.get(getAdapterPosition()).setIsSelected(true);
+                    notifyItemChanged(getAdapterPosition());
+
+                    lastSelectedIndex = getAdapterPosition();
+                    onCheckboxCheckedListener.onCheckboxChecked(getItem(getAdapterPosition()));  //send message back to fragment (to change selected division title)
+                }
+            });
         }
     }
 }

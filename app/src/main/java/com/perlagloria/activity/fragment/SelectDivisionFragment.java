@@ -23,6 +23,7 @@ import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 
 import org.json.JSONArray;
@@ -52,8 +53,11 @@ public class SelectDivisionFragment extends Fragment implements DivisionListAdap
     private DivisionListAdapter divisionListAdapter;
     private ArrayList<Division> divisionArrayList;
 
+    private TextView champTextView;
     private TextView champValueTextView;
+    private TextView tournTextView;
     private TextView tournValueTextView;
+    private TextView divisTextView;
     private TextView divisValueTextView;
 
     private OnDivisionPassListener divisionPassListener;  //pass selected division back to the activity
@@ -94,22 +98,30 @@ public class SelectDivisionFragment extends Fragment implements DivisionListAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_select_division, container, false);
+        champTextView = (TextView) rootView.findViewById(R.id.champTextView);
         champValueTextView = (TextView) rootView.findViewById(R.id.champValueTextView);
         champValueTextView.setText(customerName);
+        tournTextView = (TextView) rootView.findViewById(R.id.tournTextView);
         tournValueTextView = (TextView) rootView.findViewById(R.id.tournValueTextView);
         tournValueTextView.setText(tournamentName);
+        divisTextView = (TextView) rootView.findViewById(R.id.divisTextView);
         divisValueTextView = (TextView) rootView.findViewById(R.id.divisValueTextView);
 
         ((ChooseTeamActivity) getActivity()).setToolbarTitle(getString(R.string.toolbar_choose_team_title));
 
         divisionArrayList = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(getActivity());
-
         divisionListRecView = (RecyclerView) rootView.findViewById(R.id.container_divisions);
-        divisionListAdapter = new DivisionListAdapter(divisionArrayList, this);
+        divisionListAdapter = new DivisionListAdapter(getActivity(), divisionArrayList, this);
         divisionListRecView.setAdapter(divisionListAdapter);
         divisionListRecView.setItemAnimator(null);
-        divisionListRecView.setLayoutManager(mLayoutManager);
+        divisionListRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        champTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        champValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        tournTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        tournValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        divisTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, getActivity()));
+        divisValueTextView.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
 
         loadDivisionInfo();
 
