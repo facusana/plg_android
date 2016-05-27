@@ -4,6 +4,7 @@ package com.perlagloria.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -63,7 +64,10 @@ public class FixtureMatchMapFragment extends Fragment {
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
-                        map.setImage(ImageSource.bitmap(bitmap));
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(-90);
+
+                        map.setImage(ImageSource.bitmap(Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true)));
                     }
 
                     @Override
