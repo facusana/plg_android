@@ -1,4 +1,4 @@
-package com.perlagloria.activity.fragment;
+package com.perlagloria.fragment;
 
 
 import android.content.Context;
@@ -17,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.perlagloria.R;
 import com.perlagloria.model.Division;
 import com.perlagloria.model.FixtureDate;
@@ -27,7 +29,7 @@ import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
-import com.perlagloria.util.ImageDownloader;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
 
@@ -43,19 +45,16 @@ public class FixtureMatchInfoFragment extends Fragment {
     private static final String LOADING_FIXTURE_MATCH_TAG = "fixture_match_loading";
     private int teamId;
 
+    private TextView nextgameTitle;
     private ImageView team1LogoImgView;
     private ImageView team2LogoImgView;
     private TextView versusTV;
     private TextView team1NameTV;
     private TextView team2NameTV;
-    private TextView suspendedTV;
     private TextView dateNumberTV;
     private TextView dateOfMatchTV;
     private TextView timeOfMatchTV;
     private TextView fieldNumberTV;
-    private TextView homeGoalsTV;
-    private TextView awayGoalsTV;
-    private TextView mapCodeTV;
 
     private FixtureMatchInfo fixtureMatchInfo;
 
@@ -67,19 +66,25 @@ public class FixtureMatchInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_fixture_match_info, container, false);
 
+        nextgameTitle = (TextView) rootView.findViewById(R.id.nextgame_title);
+        dateNumberTV = (TextView) rootView.findViewById(R.id.dateNumberTV);
         team1LogoImgView = (ImageView) rootView.findViewById(R.id.team1LogoImgView);
         team2LogoImgView = (ImageView) rootView.findViewById(R.id.team2LogoImgView);
         versusTV = (TextView) rootView.findViewById(R.id.versusTV);
         team1NameTV = (TextView) rootView.findViewById(R.id.team1NameTV);
         team2NameTV = (TextView) rootView.findViewById(R.id.team2NameTV);
-        suspendedTV = (TextView) rootView.findViewById(R.id.suspendedTV);
-        dateNumberTV = (TextView) rootView.findViewById(R.id.dateNumberTV);
         dateOfMatchTV = (TextView) rootView.findViewById(R.id.dateOfMatchTV);
         timeOfMatchTV = (TextView) rootView.findViewById(R.id.timeOfMatchTV);
         fieldNumberTV = (TextView) rootView.findViewById(R.id.fieldNumberTV);
-        homeGoalsTV = (TextView) rootView.findViewById(R.id.homeGoalsTV);
-        awayGoalsTV = (TextView) rootView.findViewById(R.id.awayGoalsTV);
-        mapCodeTV = (TextView) rootView.findViewById(R.id.mapCodeTV);
+
+        nextgameTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        dateNumberTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        versusTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        team1NameTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        team2NameTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        dateOfMatchTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        timeOfMatchTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        fieldNumberTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
 
         SharedPreferences sPref = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
         teamId = sPref.getInt(SharedPreferenceKey.TEAM_ID, -1);
@@ -223,6 +228,24 @@ public class FixtureMatchInfoFragment extends Fragment {
 
     private void setData() { //throws ParseException {
         try {
+            Glide.with(team1LogoImgView.getContext())
+                    .load(ServerApi.loadTeamImageUrl + fixtureMatchInfo.getHomeTeam().getId())
+                    .thumbnail(0.5f)
+                    //.error(R.drawable.shirt)
+                    .crossFade()
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(team1LogoImgView);
+
+            Glide.with(team2LogoImgView.getContext())
+                    .load(ServerApi.loadTeamImageUrl + fixtureMatchInfo.getAwayTeam().getId())
+                    .thumbnail(0.5f)
+                    //.error(R.drawable.shirt)
+                    .crossFade()
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(team2LogoImgView);
+
             team1NameTV.setText(fixtureMatchInfo.getHomeTeam().getName());
             team2NameTV.setText(fixtureMatchInfo.getAwayTeam().getName());
 
@@ -240,26 +263,12 @@ public class FixtureMatchInfoFragment extends Fragment {
             dateOfMatchTV.setText(outputDate);
             timeOfMatchTV.setText(fixtureMatchInfo.getHour());
 
-            homeGoalsTV.setText(String.valueOf(fixtureMatchInfo.getHomeGoals()));
-            awayGoalsTV.setText(String.valueOf(fixtureMatchInfo.getAwayGoals()));
-
             if (fixtureMatchInfo.getFieldNumber() != null) {
                 fieldNumberTV.setText(getString(R.string.field_number, fixtureMatchInfo.getFieldNumber()));
                 fieldNumberTV.setVisibility(View.VISIBLE);
+            } else {
+                fieldNumberTV.setVisibility(View.INVISIBLE);
             }
-
-            if (fixtureMatchInfo.getMapCode() != null) {
-                mapCodeTV.setText(getString(R.string.map_code, fixtureMatchInfo.getMapCode()));
-                mapCodeTV.setVisibility(View.VISIBLE);
-            }
-
-            if (fixtureMatchInfo.getFixtureDate().getIsSuspended()) {
-                suspendedTV.setText(fixtureMatchInfo.getFixtureDate().getSuspendedReason());
-                suspendedTV.setVisibility(View.VISIBLE);
-            }
-
-            new ImageDownloader(team1LogoImgView).execute(ServerApi.loadTeamImageUrl + fixtureMatchInfo.getHomeTeam().getId());
-            new ImageDownloader(team2LogoImgView).execute(ServerApi.loadTeamImageUrl + fixtureMatchInfo.getAwayTeam().getId());
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -267,6 +276,8 @@ public class FixtureMatchInfoFragment extends Fragment {
     }
 
     private void setDummyData() {
+        team1LogoImgView.setVisibility(View.GONE);
+        team2LogoImgView.setVisibility(View.GONE);
         team1NameTV.setText("");
         team2NameTV.setText("");
         versusTV.setText(R.string.not_available);
@@ -274,6 +285,5 @@ public class FixtureMatchInfoFragment extends Fragment {
         dateOfMatchTV.setText("");
         timeOfMatchTV.setText("");
         fieldNumberTV.setText("");
-        mapCodeTV.setText("");
     }
 }

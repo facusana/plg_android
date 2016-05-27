@@ -1,4 +1,4 @@
-package com.perlagloria.activity.fragment;
+package com.perlagloria.fragment;
 
 
 import android.annotation.SuppressLint;
@@ -27,6 +27,7 @@ import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
 
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 public class StatisticsFragment extends Fragment {
     private static final String LOADING_STATISTICS_TAG = "statistics_loading";
 
+    private TextView positionsTitle;
     private TableLayout table;
     private RelativeLayout tableWrapper;
     private TextView teamTVHeader;
@@ -60,16 +62,11 @@ public class StatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
+        positionsTitle = (TextView) rootView.findViewById(R.id.positions_title);
         table = (TableLayout) rootView.findViewById(R.id.table);
-        teamTVHeader = (TextView) rootView.findViewById(R.id.teamTVHeader);
         tableWrapper = (RelativeLayout) rootView.findViewById(R.id.table_wrapper);
 
-        pointsTVHeader = (TextView) rootView.findViewById(R.id.pointsTVHeader);
-        winsTVHeader = (TextView) rootView.findViewById(R.id.winsTVHeader);
-        tiesTVHeader = (TextView) rootView.findViewById(R.id.tiesTVHeader);
-        lossesTVHeader = (TextView) rootView.findViewById(R.id.lossesTVHeader);
-        goalsForTVHeader = (TextView) rootView.findViewById(R.id.goalsForTVHeader);
-        goalsAgainstTVHeader = (TextView) rootView.findViewById(R.id.goalsAgainstTVHeader);
+        positionsTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
 
         SharedPreferences sPref = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
         teamId = sPref.getInt(SharedPreferenceKey.TEAM_ID, -1);
@@ -156,19 +153,51 @@ public class StatisticsFragment extends Fragment {
         return true;
     }
 
+    @SuppressLint("DefaultLocale")
     private void fillTable() {
         final TableRow headerRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_header_item, null);
         table.addView(headerRow);
 
+        teamTVHeader = (TextView) headerRow.findViewById(R.id.teamTVHeader);
+        pointsTVHeader = (TextView) headerRow.findViewById(R.id.pointsTVHeader);
+        winsTVHeader = (TextView) headerRow.findViewById(R.id.winsTVHeader);
+        tiesTVHeader = (TextView) headerRow.findViewById(R.id.tiesTVHeader);
+        lossesTVHeader = (TextView) headerRow.findViewById(R.id.lossesTVHeader);
+        goalsForTVHeader = (TextView) headerRow.findViewById(R.id.goalsForTVHeader);
+        goalsAgainstTVHeader = (TextView) headerRow.findViewById(R.id.goalsAgainstTVHeader);
+
+        teamTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        pointsTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        winsTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        tiesTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        lossesTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        goalsForTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        goalsAgainstTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+
         for (int i = 0; i < statisticsArrayList.size(); i++) {
             TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_row_item, null);
-            ((TextView) tableRow.findViewById(R.id.teamTV)).setText("" + (i + 1) + " " + statisticsArrayList.get(i).getName());
-            ((TextView) tableRow.findViewById(R.id.pointsTV)).setText("" + statisticsArrayList.get(i).getPoints());
-            ((TextView) tableRow.findViewById(R.id.winsTV)).setText("" + statisticsArrayList.get(i).getWins());
-            ((TextView) tableRow.findViewById(R.id.tiesTV)).setText("" + statisticsArrayList.get(i).getTies());
-            ((TextView) tableRow.findViewById(R.id.lossesTV)).setText("" + statisticsArrayList.get(i).getLosses());
-            ((TextView) tableRow.findViewById(R.id.goalsForTV)).setText("" + statisticsArrayList.get(i).getGoalsFor());
-            ((TextView) tableRow.findViewById(R.id.goalsAgainstTV)).setText("" + statisticsArrayList.get(i).getGoalsAgainst());
+            TextView teamValue = (TextView) tableRow.findViewById(R.id.teamTV);
+            teamValue.setText(String.format("%d %s", (i + 1), statisticsArrayList.get(i).getName()));
+            TextView pointsValue = (TextView) tableRow.findViewById(R.id.pointsTV);
+            pointsValue.setText(String.valueOf(statisticsArrayList.get(i).getPoints()));
+            TextView winsValue = (TextView) tableRow.findViewById(R.id.winsTV);
+            winsValue.setText(String.valueOf(statisticsArrayList.get(i).getWins()));
+            TextView tiesValue = (TextView) tableRow.findViewById(R.id.tiesTV);
+            tiesValue.setText(String.valueOf(statisticsArrayList.get(i).getTies()));
+            TextView lossesValue = (TextView) tableRow.findViewById(R.id.lossesTV);
+            lossesValue.setText(String.valueOf(statisticsArrayList.get(i).getLosses()));
+            TextView goalForValue = (TextView) tableRow.findViewById(R.id.goalsForTV);
+            goalForValue.setText(String.valueOf(statisticsArrayList.get(i).getGoalsFor()));
+            TextView goalAgainstValue = (TextView) tableRow.findViewById(R.id.goalsAgainstTV);
+            goalAgainstValue.setText(String.valueOf(statisticsArrayList.get(i).getGoalsAgainst()));
+
+            teamValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            pointsValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            winsValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            tiesValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            lossesValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            goalForValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            goalAgainstValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
 
             table.addView(tableRow);
         }

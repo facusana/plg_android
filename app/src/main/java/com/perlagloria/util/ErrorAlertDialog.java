@@ -15,8 +15,6 @@ public class ErrorAlertDialog {
     public static final String AUTH_FAILURE_ERROR = "There was an authentication failure when performing a request";
     public static final String UNKNOWN_ERROR = "Unknown error";
 
-    public static final String NO_PRODUCTS_FOUND = "Nothing was found";
-
     public static void show(Activity parent, String message) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(parent, R.style.AppCompatAlertDialogStyle);
         builder.setMessage(message);

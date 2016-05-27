@@ -4,7 +4,7 @@
     android:id="@+id/mainToolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/custom_toolbar_height"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:gravity="center"
     android:minHeight="@dimen/custom_toolbar_height"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

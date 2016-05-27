@@ -1,4 +1,4 @@
-package com.perlagloria.activity.fragment;
+package com.perlagloria.fragment;
 
 import android.content.Context;
 import android.os.Bundle;

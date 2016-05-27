@@ -12,8 +12,7 @@
         android:layout_weight="1"
         android:singleLine="true"
         android:text="@string/team"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/pointsTVHeader"
@@ -22,8 +21,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/points"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/winsTVHeader"
@@ -32,8 +30,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/wins"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/tiesTVHeader"
@@ -42,8 +39,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/ties"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/lossesTVHeader"
@@ -52,8 +48,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/losses"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/goalsForTVHeader"
@@ -62,8 +57,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/goalsFor"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
     <TextView
         android:id="@+id/goalsAgainstTVHeader"
@@ -72,7 +66,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/goalsAgainst"
-        android:textColor="#0C2642"
-        android:textStyle="bold" />
+        android:textColor="#0C2642" />
 
 </TableRow>

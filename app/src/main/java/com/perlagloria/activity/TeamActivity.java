@@ -1,44 +1,36 @@
 package com.perlagloria.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.perlagloria.R;
-import com.perlagloria.activity.fragment.MyTeamFragment;
-import com.perlagloria.activity.fragment.StatisticsFragment;
+import com.perlagloria.adapter.TeamActivityViewPagerAdapter;
+import com.perlagloria.fragment.FixtureMatchInfoFragment;
+import com.perlagloria.fragment.FixtureMatchMapFragment;
+import com.perlagloria.fragment.StatisticsFragment;
 import com.perlagloria.responder.ServerRequestListener;
 import com.perlagloria.responder.ServerResponseErrorListener;
-import com.perlagloria.util.DpiUtils;
+import com.perlagloria.util.DimensionUtils;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
-import com.perlagloria.util.SharedPreferenceKey;
 
 public class TeamActivity extends AppCompatActivity implements
         ServerResponseErrorListener,
         ServerRequestListener {
-    private TextView firstTab;
-    private TextView secondTab;
-    private FrameLayout tabFragmentContainer;
+
     private TextView toolbarTitle;
-
-    private ProgressBar progressBar;
-
-    private boolean isFirstTabSelected;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,66 +48,51 @@ public class TeamActivity extends AppCompatActivity implements
                 getSupportActionBar().setTitle("");
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
+
+            setToolbarTitle(getString(R.string.toolbar_team_activity_title));
         }
 
-        tabFragmentContainer = (FrameLayout) findViewById(R.id.tab_fragment_container);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
 
-        firstTab = (TextView) findViewById(R.id.firstTab);
-        firstTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFirstTabSelected) return;
-                isFirstTabSelected = true;
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        if (tabLayout != null) {
+            tabLayout.setupWithViewPager(viewPager);
+            setupTabIcons();
+        }
+    }
 
-                secondTab.setBackgroundResource(R.drawable.custom_tab_back_unselected);
-                firstTab.setBackgroundResource(R.drawable.custom_tab_back_selected);
+    private void setupViewPager(ViewPager viewPager) {
+        TeamActivityViewPagerAdapter adapter = new TeamActivityViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new StatisticsFragment(), getString(R.string.positions));
+        adapter.addFragment(new FixtureMatchInfoFragment(), getString(R.string.sport_event));
+        adapter.addFragment(new FixtureMatchMapFragment(), getString(R.string.fixture_match_map));
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+    }
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                MyTeamFragment targetFragment = new MyTeamFragment();
+    private void setupTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText(getString(R.string.positions));
+        tabOne.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_shield_icon, 0, 0);
+        tabOne.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
+        tabOne.setSelected(true);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
 
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
-                params.setMargins(DpiUtils.convertDipToPixels(getApplicationContext(), 20), DpiUtils.convertDipToPixels(getApplicationContext(), 10),
-                        DpiUtils.convertDipToPixels(getApplicationContext(), 20), DpiUtils.convertDipToPixels(getApplicationContext(), 0));
-                tabFragmentContainer.setLayoutParams(params);
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTwo.setText(getString(R.string.sport_event));
+        tabTwo.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_table_icon, 0, 0);
+        tabTwo.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-                fragmentManager.beginTransaction()
-                        .replace(tabFragmentContainer.getId(), targetFragment)
-                        .setTransition(FragmentTransaction.TRANSIT_NONE)
-                        .commit();
-            }
-        });
-
-        secondTab = (TextView) findViewById(R.id.secondTab);
-        secondTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isFirstTabSelected) return;
-                isFirstTabSelected = false;
-
-                firstTab.setBackgroundResource(R.drawable.custom_tab_back_unselected);
-                secondTab.setBackgroundResource(R.drawable.custom_tab_back_selected);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                StatisticsFragment targetFragment = new StatisticsFragment();
-
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
-                params.setMargins(DpiUtils.convertDipToPixels(getApplicationContext(), 0), DpiUtils.convertDipToPixels(getApplicationContext(), 10),
-                        DpiUtils.convertDipToPixels(getApplicationContext(), 0), DpiUtils.convertDipToPixels(getApplicationContext(), 0));
-                tabFragmentContainer.setLayoutParams(params);
-
-                fragmentManager.beginTransaction()
-                        .replace(tabFragmentContainer.getId(), targetFragment)
-                        .setTransition(FragmentTransaction.TRANSIT_NONE)
-                        .commit();
-            }
-        });
-
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-
-        SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
-        setToolbarTitle(sPref.getString(SharedPreferenceKey.TEAM_NAME, "Null"));
-
-        firstTab.performClick();    //select 1st tab
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabThree.setText(getString(R.string.fixture_match_map));
+        tabThree.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_map_icon, 0, 0);
+        tabThree.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
+        tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 
     @Override
@@ -144,17 +121,17 @@ public class TeamActivity extends AppCompatActivity implements
     }
 
     private void showProgressBar() {
-        if (progressBar != null) {
-            tabFragmentContainer.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
+//        if (progressBar != null) {
+//            tabFragmentContainer.setVisibility(View.INVISIBLE);
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void hideProgressBar() {
-        if (progressBar != null) {
-            tabFragmentContainer.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-        }
+//        if (progressBar != null) {
+//            tabFragmentContainer.setVisibility(View.VISIBLE);
+//            progressBar.setVisibility(View.GONE);
+//        }
     }
 
     @Override

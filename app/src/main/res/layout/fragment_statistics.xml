@@ -3,25 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.perlagloria.activity.fragment.StatisticsFragment">
+    tools:context=".fragment.StatisticsFragment">
 
-    <LinearLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#82FFFFFF" />
+
+    <TextView
+        android:id="@+id/positions_title"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#044D91"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:background="#024c90"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/positions_fragment_title"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="22sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/positions"
-            android:textColor="@android:color/white"
-            android:textSize="22sp" />
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#82ffffff" />
 
     <RelativeLayout
         android:id="@+id/table_wrapper"
@@ -42,11 +47,5 @@
         </ScrollView>
 
     </RelativeLayout>
-
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/bottomLayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/custom_toolbar_height"-->
-    <!--android:background="@color/colorPrimary"></RelativeLayout>-->
 
 </LinearLayout>
