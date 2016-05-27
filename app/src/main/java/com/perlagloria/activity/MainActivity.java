@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOADING_TEST_TAG = "loading_team_test";
+    boolean isIntentLaunched = false;
     private LinearLayout poweredByContainer;
     private TextView poweredByTitle;
     private ImageView champLogo;
@@ -67,15 +68,18 @@ public class MainActivity extends AppCompatActivity {
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             poweredByContainer.setVisibility(View.VISIBLE);
 
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(getApplicationContext(), TeamActivity.class);    //if team is available -> move to last screen
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }, 2000);   //show splashscreen during 2 sec
+                            if (!isIntentLaunched) {        //prevent double call
+                                isIntentLaunched = true;
 
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(getApplicationContext(), TeamActivity.class);    //if team is available -> move to last screen
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }, 2000);   //show splashscreen during 2 sec
+                            }
                             return false;
                         }
                     })
@@ -90,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 2000);   //show splashscreen during 2 sec
         }
-
-
 
 
         //checkIsDataFromServerJObject(ServerApi.loadFixtureMatchInfoUrl + savedTeamid);
