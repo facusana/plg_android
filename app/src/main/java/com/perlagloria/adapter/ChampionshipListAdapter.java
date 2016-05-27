@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.perlagloria.R;
 import com.perlagloria.model.Customer;
 import com.perlagloria.util.FontManager;
+import com.perlagloria.util.ServerApi;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +50,14 @@ public class ChampionshipListAdapter extends RecyclerView.Adapter<ChampionshipLi
 
         holder.champItemValue.setText(current.getName());
 
+        Glide.with(holder.champLogo.getContext())
+                .load(ServerApi.loadCustomerImageByCustomerIdUrl + current.getId())
+                .thumbnail(0.5f)
+                .crossFade()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.champLogo);
+
         if (current.isSelected()) {
             holder.checkIcon.setColorFilter(ContextCompat.getColor(context, R.color.colorSelectedItem));
         } else {
@@ -59,6 +70,13 @@ public class ChampionshipListAdapter extends RecyclerView.Adapter<ChampionshipLi
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    @Override
+    public void onViewRecycled(MyViewHolder holder) {
+        super.onViewRecycled(holder);
+        // optional, but recommended way to clear up the resources used by Glide
+        Glide.clear(holder.champLogo);
     }
 
     public Customer getItem(int position) {
@@ -75,6 +93,7 @@ public class ChampionshipListAdapter extends RecyclerView.Adapter<ChampionshipLi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout champItemLayout;
+        private ImageView champLogo;
         private TextView champItemValue;
         private ImageView checkIcon;
         private View dividerView;
@@ -83,6 +102,7 @@ public class ChampionshipListAdapter extends RecyclerView.Adapter<ChampionshipLi
             super(itemView);
 
             champItemLayout = (RelativeLayout) itemView.findViewById(R.id.champItemLayout);
+            champLogo = (ImageView) itemView.findViewById(R.id.champ_logo);
             champItemValue = (TextView) itemView.findViewById(R.id.champItemValue);
             checkIcon = (ImageView) itemView.findViewById(R.id.check_icon);
             dividerView = itemView.findViewById(R.id.horizDividerView);

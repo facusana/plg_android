@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tournItemLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="55dp">
 
     <TextView
         android:id="@+id/tournItemValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/check_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/check_icon"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="5dp"
@@ -22,6 +21,7 @@
         android:layout_toStartOf="@+id/check_icon"
         android:gravity="center_vertical"
         android:singleLine="true"
+        android:text="aaaaa"
         android:textSize="18sp" />
 
     <ImageView
@@ -30,10 +30,9 @@
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
         android:tint="@color/colorUnselectedItem"
         app:srcCompat="@drawable/ic_check"
         tools:src="@drawable/ic_check" />
@@ -42,10 +41,9 @@
         android:id="@+id/horizDividerView"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:layout_below="@+id/tournItemValue"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
         android:background="@android:color/black" />
 
 </RelativeLayout>
