@@ -244,16 +244,16 @@ public class ChooseTeamActivity extends AppCompatActivity implements
 
     private void showProgressBar() {
         if (progressBar != null) {
-            fragmentContainer.setVisibility(View.INVISIBLE);
-            nextButtonContainer.setVisibility(View.INVISIBLE);
+            //fragmentContainer.setVisibility(View.INVISIBLE);
+            //nextButtonContainer.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         }
     }
 
     private void hideProgressBar() {
         if (progressBar != null) {
-            fragmentContainer.setVisibility(View.VISIBLE);
-            nextButtonContainer.setVisibility(View.VISIBLE);
+            //fragmentContainer.setVisibility(View.VISIBLE);
+            //nextButtonContainer.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
     }
