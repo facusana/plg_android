@@ -1,6 +1,5 @@
 package com.perlagloria.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,24 +14,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.perlagloria.R;
 import com.perlagloria.activity.fragment.MyTeamFragment;
 import com.perlagloria.activity.fragment.StatisticsFragment;
+import com.perlagloria.responder.ServerRequestListener;
+import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.DpiUtils;
+import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.SharedPreferenceKey;
 
-public class TeamActivity extends AppCompatActivity {
+public class TeamActivity extends AppCompatActivity implements
+        ServerResponseErrorListener,
+        ServerRequestListener {
     private TextView firstTab;
     private TextView secondTab;
     private FrameLayout tabFragmentContainer;
     private TextView toolbarTitle;
 
-    private boolean isFirstTabSelected;
+    private ProgressBar progressBar;
 
-    private ProgressDialog progressDialog;
+    private boolean isFirstTabSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +46,17 @@ public class TeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_team);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
-        toolbarTitle = (TextView) mainToolbar.findViewById(R.id.toolbar_title);
-        setSupportActionBar(mainToolbar);
+        if (mainToolbar != null) {
+            toolbarTitle = (TextView) mainToolbar.findViewById(R.id.toolbar_title);
+            toolbarTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, this));
 
-        getSupportActionBar().setTitle("");
+            setSupportActionBar(mainToolbar);
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("");
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
 
         tabFragmentContainer = (FrameLayout) findViewById(R.id.tab_fragment_container);
 
@@ -61,7 +73,7 @@ public class TeamActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 MyTeamFragment targetFragment = new MyTeamFragment();
 
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
                 params.setMargins(DpiUtils.convertDipToPixels(getApplicationContext(), 20), DpiUtils.convertDipToPixels(getApplicationContext(), 10),
                         DpiUtils.convertDipToPixels(getApplicationContext(), 20), DpiUtils.convertDipToPixels(getApplicationContext(), 0));
                 tabFragmentContainer.setLayoutParams(params);
@@ -86,7 +98,7 @@ public class TeamActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 StatisticsFragment targetFragment = new StatisticsFragment();
 
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabFragmentContainer.getLayoutParams();
                 params.setMargins(DpiUtils.convertDipToPixels(getApplicationContext(), 0), DpiUtils.convertDipToPixels(getApplicationContext(), 10),
                         DpiUtils.convertDipToPixels(getApplicationContext(), 0), DpiUtils.convertDipToPixels(getApplicationContext(), 0));
                 tabFragmentContainer.setLayoutParams(params);
@@ -98,10 +110,7 @@ public class TeamActivity extends AppCompatActivity {
             }
         });
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
         setToolbarTitle(sPref.getString(SharedPreferenceKey.TEAM_NAME, "Null"));
@@ -131,54 +140,57 @@ public class TeamActivity extends AppCompatActivity {
     }
 
     public void setToolbarTitle(String text) {
-        toolbarTitle.setText(text);
+        toolbarTitle.setText(text.toUpperCase());
     }
 
-    public void showConnectionErrorAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setMessage(getString(R.string.check_connection_dialog));
-        builder.setNegativeButton(getString(R.string.check_connection_dialog_close), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.setCancelable(false);
-        builder.show();
-    }
-
-    public void showPDialog(String message) {
-        if (progressDialog != null && !progressDialog.isShowing()) {
-            progressDialog.setMessage(message);
-            progressDialog.show();
+    private void showProgressBar() {
+        if (progressBar != null) {
+            tabFragmentContainer.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
-    public void hidePDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+    private void hideProgressBar() {
+        if (progressBar != null) {
+            tabFragmentContainer.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onServerResponseError(String message) {
+        ErrorAlertDialog.show(TeamActivity.this, message);
+    }
+
+    @Override
+    public void onRequestStarted() {
+        showProgressBar();
+    }
+
+    @Override
+    public void onRequestFinished() {
+        hideProgressBar();
     }
 
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        showExitAlertDialog();
-    }
-
-    private void showExitAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setMessage(getString(R.string.sure_exit_dialog));
-        builder.setNegativeButton(getString(R.string.sure_exit_dialog_no), null);
-        builder.setPositiveButton(getString(R.string.sure_exit_dialog_yes), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.setCancelable(false);
-        builder.show();
+        ErrorAlertDialog.show(TeamActivity.this,
+                getString(R.string.sure_exit_dialog),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //stub
+                    }
+                },
+                getString(R.string.sure_exit_dialog_no),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        System.exit(0);
+                    }
+                },
+                getString(R.string.sure_exit_dialog_yes));
     }
 }

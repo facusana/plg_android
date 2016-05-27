@@ -18,13 +18,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.perlagloria.R;
-import com.perlagloria.activity.TeamActivity;
 import com.perlagloria.model.Division;
 import com.perlagloria.model.FixtureDate;
 import com.perlagloria.model.FixtureMatchInfo;
 import com.perlagloria.model.Tactic;
 import com.perlagloria.model.Team;
+import com.perlagloria.responder.ServerRequestListener;
+import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
+import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.ImageDownloader;
 import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
@@ -89,14 +91,16 @@ public class FixtureMatchInfoFragment extends Fragment {
 
     private void loadFixtureMatchInfo() {
         String loadFixtureMatchInfoUrl = ServerApi.loadFixtureMatchInfoUrl + teamId;
-        ((TeamActivity) getActivity()).showPDialog(getString(R.string.loading_data_progress_dialog));
+        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+        requestResponder.onRequestStarted();
 
         JsonObjectRequest fixtureMatchInfoJsonRequest = new JsonObjectRequest(loadFixtureMatchInfoUrl,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         VolleyLog.d(LOADING_FIXTURE_MATCH_TAG, response.toString());
-                        ((TeamActivity) getActivity()).hidePDialog();
+                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+                        requestResponder.onRequestFinished();
 
                         if (!parseFixtureMatchInfoJson(response)) { //case of response parse error
                             Toast.makeText(getActivity(), R.string.no_info_for_next_match, Toast.LENGTH_LONG).show();
@@ -110,15 +114,11 @@ public class FixtureMatchInfoFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_FIXTURE_MATCH_TAG, "Error: " + error.getMessage());
-                        ((TeamActivity) getActivity()).hidePDialog();
+                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+                        requestResponder.onRequestFinished();
 
-                        if (error.getMessage() == null) {                                            //com.android.volley.TimeoutError
-                            ((TeamActivity) getActivity()).showConnectionErrorAlertDialog();
-                        } else if (error.getMessage().contains("java.net.UnknownHostException") && error.networkResponse == null) { //com.android.volley.NoConnectionError
-                            ((TeamActivity) getActivity()).showConnectionErrorAlertDialog();
-                        } else {                                                                     //response error, code = error.networkResponse.statusCode
-                            Toast.makeText(getActivity(), R.string.server_response_error, Toast.LENGTH_LONG).show();
-                        }
+                        ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
+                        responseResponder.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
                     }
                 }
         );

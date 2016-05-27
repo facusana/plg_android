@@ -4,7 +4,7 @@
 
     <color name="colorPrimary">#385183</color>
     <color name="colorPrimaryDark">#003b69</color>
-    <color name="colorAccent">#F50057</color>
+    <color name="colorAccent">@color/colorPrimaryDark</color>
     <color name="colorAlert">#FE0010</color>
 
     <color name="white">#ffffff</color>

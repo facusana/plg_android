@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application fonts directory -->
+    <item name="helvetica_neue_bold" type="string">fonts/HelveticaNeue_Bold.ttf</item>
+    <item name="helvetica_neue_medium" type="string">fonts/HelveticaNeue_Medium.ttf</item>
+    <item name="helvetica_neue_light" type="string">fonts/HelveticaNeue_Light.ttf</item>
+</resources>

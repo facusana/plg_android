@@ -1,12 +1,10 @@
 package com.perlagloria.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -16,6 +14,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.perlagloria.R;
 import com.perlagloria.util.AppController;
+import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.SharedPreferenceKey;
 
 import org.json.JSONException;
@@ -79,13 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_TEST_TAG, "Error: " + error.getMessage());
 
-                        if (error.getMessage() == null) {                                            //com.android.volley.TimeoutError
-                            showErrorAlertDialog();
-                        } else if (error.getMessage().contains("java.net.UnknownHostException") && error.networkResponse == null) { //com.android.volley.NoConnectionError
-                            showErrorAlertDialog();
-                        } else {                                                                     //response error, code = error.networkResponse.statusCode
-                            Toast.makeText(getApplicationContext(), R.string.server_response_error, Toast.LENGTH_LONG).show();
-                        }
+                        ErrorAlertDialog.show(MainActivity.this, ErrorAlertDialog.getVolleyErrorMessage(error));
                     }
                 }
         );
@@ -93,17 +86,4 @@ public class MainActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(testJsonRequest, LOADING_TEST_TAG);
     }
 
-    private void showErrorAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setMessage(getString(R.string.check_connection_dialog));
-        builder.setNegativeButton(getString(R.string.check_connection_dialog_close), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.setCancelable(false);
-        builder.show();
-    }
 }

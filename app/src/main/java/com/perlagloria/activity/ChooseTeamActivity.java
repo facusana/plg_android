@@ -1,19 +1,16 @@
 package com.perlagloria.activity;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +29,11 @@ import com.perlagloria.model.Customer;
 import com.perlagloria.model.Division;
 import com.perlagloria.model.Team;
 import com.perlagloria.model.Tournament;
+import com.perlagloria.responder.ServerRequestListener;
+import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
+import com.perlagloria.util.ErrorAlertDialog;
+import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
 
@@ -40,8 +41,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ChooseTeamActivity extends AppCompatActivity implements SelectChampionshipFragment.OnChampionshipPassListener, SelectTournamentFragment.OnTournamentPassListener,
-        SelectDivisionFragment.OnDivisionPassListener, SelectTeamFragment.OnTeamPassListener {
+public class ChooseTeamActivity extends AppCompatActivity implements
+        SelectChampionshipFragment.OnChampionshipPassListener,
+        SelectTournamentFragment.OnTournamentPassListener,
+        SelectDivisionFragment.OnDivisionPassListener,
+        SelectTeamFragment.OnTeamPassListener,
+        ServerResponseErrorListener,
+        ServerRequestListener {
     public static final int SELECT_CHAMPIONSHIP = 1;
     public static final int SELECT_TOURNAMENT = 2;
     public static final int SELECT_DIVISION = 3;
@@ -49,17 +55,19 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
     private static final String LOADING_TEST_TAG = "loading_test";
     private int currentState = SELECT_CHAMPIONSHIP;
 
-    private ImageView triangleImageView;
-    private RelativeLayout bottomLayout; //layout with "next" triangle button
     private boolean isCheckingProcess;  //check next loading data
     private TextView toolbarTitle;
+    private TextView next;
 
     private Customer selectedChampionship;
     private Tournament selectedTournament;
     private Division selectedDivision;
     private Team selectedTeam;
 
-    private ProgressDialog progressDialog;
+    private FrameLayout fragmentContainer;
+    private RelativeLayout nextButtonContainer;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,19 +75,25 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
         setContentView(R.layout.activity_choose_team);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
-        toolbarTitle = (TextView) mainToolbar.findViewById(R.id.toolbar_title);
-        setSupportActionBar(mainToolbar);
-        getSupportActionBar().setTitle("");
+        if (mainToolbar != null) {
+            toolbarTitle = (TextView) mainToolbar.findViewById(R.id.toolbar_title);
+            toolbarTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, this));
 
-        bottomLayout = (RelativeLayout) findViewById(R.id.bottomLayout);
-        bottomLayout.setOnClickListener(new NextClickListener());
-        triangleImageView = (ImageView) findViewById(R.id.triangleImageView);
-        triangleImageView.setOnClickListener(new NextClickListener());
+            setSupportActionBar(mainToolbar);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("");
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
+
+        next = (TextView) findViewById(R.id.next);
+        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+        nextButtonContainer = (RelativeLayout) findViewById(R.id.next_button_container);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        next.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
+        next.setOnClickListener(new NextClickListener());
 
         isCheckingProcess = false;
 
@@ -87,7 +101,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
     }
 
     public void setToolbarTitle(String text) {
-        toolbarTitle.setText(text);
+        toolbarTitle.setText(text.toUpperCase());
     }
 
     private void loadFragment() {
@@ -152,6 +166,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
      * Check if next loading data is available and the response isn't empty.
      */
     private void checkIsDataFromServerJArray(String url) {
+        showProgressBar();
         isCheckingProcess = true;
 
         JsonArrayRequest testJsonRequest = new JsonArrayRequest(url,
@@ -159,6 +174,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
                     @Override
                     public void onResponse(JSONArray response) {
                         VolleyLog.d(LOADING_TEST_TAG, response.toString());
+                        hideProgressBar();
 
                         try {
                             response.getJSONObject(0).getInt("id");   //json is not null
@@ -174,14 +190,10 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_TEST_TAG, "Error: " + error.getMessage());
+                        hideProgressBar();
 
-                        if (error.getMessage() == null) {                                            //com.android.volley.TimeoutError
-                            showConnectionErrorAlertDialog();
-                        } else if (error.getMessage().contains("java.net.UnknownHostException") && error.networkResponse == null) { //com.android.volley.NoConnectionError
-                            showConnectionErrorAlertDialog();
-                        } else {                                                                     //response error, code = error.networkResponse.statusCode
-                            Toast.makeText(getApplicationContext(), R.string.server_response_error, Toast.LENGTH_LONG).show();
-                        }
+                        onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
+
                         isCheckingProcess = false;
                     }
                 }
@@ -195,12 +207,14 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
      */
     private void checkIsDataFromServerJObject(String url) {
         isCheckingProcess = true;
+        showProgressBar();
 
         JsonObjectRequest testJsonRequest = new JsonObjectRequest(url,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         VolleyLog.d(LOADING_TEST_TAG, response.toString());
+                        hideProgressBar();
 
                         try {
                             response.getInt("id");   //json is not null
@@ -216,14 +230,10 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_TEST_TAG, "Error: " + error.getMessage());
+                        hideProgressBar();
 
-                        if (error.getMessage() == null) {                                            //com.android.volley.TimeoutError
-                            showConnectionErrorAlertDialog();
-                        } else if (error.getMessage().contains("java.net.UnknownHostException") && error.networkResponse == null) { //com.android.volley.NoConnectionError
-                            showConnectionErrorAlertDialog();
-                        } else {                                                                     //response error, code = error.networkResponse.statusCode
-                            Toast.makeText(getApplicationContext(), R.string.server_response_error, Toast.LENGTH_LONG).show();
-                        }
+                        onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
+
                         isCheckingProcess = false;
                     }
                 }
@@ -232,30 +242,19 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
         AppController.getInstance().addToRequestQueue(testJsonRequest, LOADING_TEST_TAG);
     }
 
-    public void showConnectionErrorAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setMessage(getString(R.string.check_connection_dialog));
-        builder.setNegativeButton(getString(R.string.check_connection_dialog_close), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.setCancelable(false);
-        builder.show();
-    }
-
-    public void showPDialog(String message) {
-        if (progressDialog != null && !progressDialog.isShowing()) {
-            progressDialog.setMessage(message);
-            progressDialog.show();
+    private void showProgressBar() {
+        if (progressBar != null) {
+            fragmentContainer.setVisibility(View.INVISIBLE);
+            nextButtonContainer.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
-    public void hidePDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+    private void hideProgressBar() {
+        if (progressBar != null) {
+            fragmentContainer.setVisibility(View.VISIBLE);
+            nextButtonContainer.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -292,6 +291,21 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
         selectedTeam = team;
     }
 
+    @Override
+    public void onServerResponseError(String message) {
+        ErrorAlertDialog.show(ChooseTeamActivity.this, message);
+    }
+
+    @Override
+    public void onRequestStarted() {
+        showProgressBar();
+    }
+
+    @Override
+    public void onRequestFinished() {
+        hideProgressBar();
+    }
+
     private void loadNext() {
         if (currentState < SELECT_TEAM && checkSelection()) {                                   //load next fragment
             currentState++;
@@ -324,7 +338,6 @@ public class ChooseTeamActivity extends AppCompatActivity implements SelectChamp
                 //checkIsDataFromServerJObject(ServerApi.loadFixtureMatchInfoUrl + selectedTeam.getId());
                 loadNext();
             }
-            triangleImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale_triangle));
         }
     }
 }

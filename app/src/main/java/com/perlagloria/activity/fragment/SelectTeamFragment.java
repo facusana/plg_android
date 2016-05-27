@@ -20,7 +20,10 @@ import com.perlagloria.activity.ChooseTeamActivity;
 import com.perlagloria.adapter.TeamListAdapter;
 import com.perlagloria.model.Tactic;
 import com.perlagloria.model.Team;
+import com.perlagloria.responder.ServerRequestListener;
+import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.AppController;
+import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.ServerApi;
 
 import org.json.JSONArray;
@@ -148,14 +151,16 @@ public class SelectTeamFragment extends Fragment implements TeamListAdapter.OnCh
 
     private void loadTeamInfo() {
         String loadTeamUrl = ServerApi.loadTeamUrl + divisionId;
-        ((ChooseTeamActivity) getActivity()).showPDialog(getString(R.string.loading_data_progress_dialog));
+        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+        requestResponder.onRequestStarted();
 
         JsonArrayRequest teamsJsonRequest = new JsonArrayRequest(loadTeamUrl,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         VolleyLog.d(LOADING_TEAMS_LIST_TAG, response.toString());
-                        ((ChooseTeamActivity) getActivity()).hidePDialog();
+                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+                        requestResponder.onRequestFinished();
 
                         if (!parseTeamsJson(response)) {                                            //case of response parse error
                             Toast.makeText(getActivity(), R.string.no_info_from_server, Toast.LENGTH_LONG).show();
@@ -168,15 +173,11 @@ public class SelectTeamFragment extends Fragment implements TeamListAdapter.OnCh
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_TEAMS_LIST_TAG, "Error: " + error.getMessage());
-                        ((ChooseTeamActivity) getActivity()).hidePDialog();
+                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
+                        requestResponder.onRequestFinished();
 
-                        if (error.getMessage() == null) {                                            //com.android.volley.TimeoutError
-                            ((ChooseTeamActivity) getActivity()).showConnectionErrorAlertDialog();
-                        } else if (error.getMessage().contains("java.net.UnknownHostException") && error.networkResponse == null) { //com.android.volley.NoConnectionError
-                            ((ChooseTeamActivity) getActivity()).showConnectionErrorAlertDialog();
-                        } else {                                                                     //response error, code = error.networkResponse.statusCode
-                            Toast.makeText(getActivity(), R.string.server_response_error, Toast.LENGTH_LONG).show();
-                        }
+                        ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
+                        responseResponder.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
                     }
                 }
         );
