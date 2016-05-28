@@ -100,6 +100,7 @@ public class FixtureMatchInfoFragment extends Fragment {
         requestResponder.onRequestStarted();
 
         JsonObjectRequest fixtureMatchInfoJsonRequest = new JsonObjectRequest(loadFixtureMatchInfoUrl,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

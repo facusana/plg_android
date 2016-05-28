@@ -209,6 +209,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements
         showProgressBar();
 
         JsonObjectRequest testJsonRequest = new JsonObjectRequest(url,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
