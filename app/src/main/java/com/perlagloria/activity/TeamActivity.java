@@ -1,7 +1,9 @@
 package com.perlagloria.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import com.perlagloria.responder.ServerResponseErrorListener;
 import com.perlagloria.util.DimensionUtils;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
+import com.perlagloria.util.SharedPreferenceKey;
 
 public class TeamActivity extends AppCompatActivity implements
         ServerResponseErrorListener,
@@ -49,7 +52,8 @@ public class TeamActivity extends AppCompatActivity implements
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
 
-            setToolbarTitle(getString(R.string.toolbar_team_activity_title));
+            SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
+            setToolbarTitle(sPref.getString(SharedPreferenceKey.TEAM_NAME, ""));
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);

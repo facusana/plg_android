@@ -42,9 +42,6 @@
     <!-- Choose your team -->
     <string name="toolbar_choose_team_title">SELECCIONAR DATOS</string>
 
-    <!-- Team activity toolbar title -->
-    <string name="toolbar_team_activity_title">BATIBURILLO</string>
-
     <!-- Championship -->
     <string name="championship">Campeonato</string>
 
