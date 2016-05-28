@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -120,7 +119,8 @@ public class SelectChampionshipFragment extends Fragment implements Championship
                         requestResponder.onRequestFinished();
 
                         if (!parseCustomersJson(response)) {                                        //case of response parse error
-                            Toast.makeText(getActivity(), R.string.no_info_from_server, Toast.LENGTH_LONG).show();
+                            ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
+                            responseResponder.onServerResponseError(ErrorAlertDialog.NO_INFO_FROM_SERVER);
                         } else {
                             championshipListAdapter.notifyDataSetChanged();
                         }

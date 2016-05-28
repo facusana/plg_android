@@ -24,9 +24,6 @@
     <!-- NO -->
     <string name="sure_exit_dialog_no">No</string>
 
-    <!-- No information from the server -->
-    <string name="no_info_from_server">No hay información desde el servidor</string>
-
     <!-- No information for next match-->
     <string name="no_info_for_next_match">No hay información del próximo partido</string>
 

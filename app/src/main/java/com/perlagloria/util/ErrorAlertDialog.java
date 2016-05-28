@@ -22,6 +22,8 @@ public class ErrorAlertDialog {
     public static final String AUTH_FAILURE_ERROR = "Hubo una falla de autenticación al hacer la petición.";
     public static final String UNKNOWN_ERROR = "Error desconocido.";
 
+    public static final String NO_INFO_FROM_SERVER = "No hay información desde el servidor.";
+
     public static void show(Activity parent, String message) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(parent, R.style.AppCompatAlertDialogStyle);
         builder.setMessage(message);

@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -181,7 +180,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements
                             loadNext();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), R.string.no_info_from_server, Toast.LENGTH_LONG).show();    //no information from the server
+                            onServerResponseError(ErrorAlertDialog.NO_INFO_FROM_SERVER);
                         }
                         isCheckingProcess = false;
                     }
@@ -221,7 +220,7 @@ public class ChooseTeamActivity extends AppCompatActivity implements
                             loadNext();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), R.string.no_info_from_server, Toast.LENGTH_LONG).show();    //no information from the server
+                            onServerResponseError(ErrorAlertDialog.NO_INFO_FROM_SERVER);
                         }
                         isCheckingProcess = false;
                     }

@@ -1,6 +1,7 @@
 package com.perlagloria.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -115,11 +115,15 @@ public class MainActivity extends AppCompatActivity {
                             finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), R.string.no_info_from_server, Toast.LENGTH_LONG).show();    //no information from the server
 
-                            Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);  //team isn't available -> chose team
-                            startActivity(intent);
-                            finish();
+                            ErrorAlertDialog.show(MainActivity.this, ErrorAlertDialog.NO_INFO_FROM_SERVER, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), ChooseTeamActivity.class);  //team isn't available -> chose team
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
                         }
                     }
                 },
