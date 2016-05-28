@@ -24,9 +24,6 @@
     <!-- NO -->
     <string name="sure_exit_dialog_no">No</string>
 
-    <!-- Loading data -->
-    <string name="loading_data_progress_dialog">Cargando datos</string>
-
     <!-- No information from the server -->
     <string name="no_info_from_server">No hay información desde el servidor</string>
 
@@ -35,9 +32,6 @@
 
     <!-- Not available-->
     <string name="not_available">No disponible</string>
-
-    <!-- Server response error -->
-    <string name="server_response_error">Error de respuesta del servidor</string>
 
     <!-- Choose your team -->
     <string name="toolbar_choose_team_title">SELECCIONAR DATOS</string>
@@ -56,12 +50,6 @@
 
     <!-- Map Code -->
     <string name="field_number">Cancha: %1$s</string>
-
-    <!-- Map Code -->
-    <string name="map_code">Sede: %1$s</string>
-
-    <!-- My team -->
-    <string name="my_team">MI EQUIPO</string>
 
     <!-- Statistics -->
     <string name="statistics">ESTADÍSTICAS</string>
@@ -86,6 +74,9 @@
 
     <!-- Powered by on the splashscreen -->
     <string name="powered_by">Powered by</string>
+
+    <!-- Image not available -->
+    <string name="image_not_available">Imagen no disponible</string>
 
     <!-- table columns name -->
     <string name="points">Pts</string>

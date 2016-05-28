@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,6 +29,7 @@ public class FixtureMatchMapFragment extends Fragment {
     private int teamId;
     private TextView mapTitle;
     private SubsamplingScaleImageView map;
+    private TextView imageNotAvailable;
 
     public FixtureMatchMapFragment() {
         // Required empty public constructor
@@ -41,8 +41,10 @@ public class FixtureMatchMapFragment extends Fragment {
 
         mapTitle = (TextView) rootView.findViewById(R.id.map_title);
         map = (SubsamplingScaleImageView) rootView.findViewById(R.id.map_image);
+        imageNotAvailable = (TextView) rootView.findViewById(R.id.image_not_available_title);
 
         mapTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+        imageNotAvailable.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
 
         loadFixtureMatchMapImage();
 
@@ -58,7 +60,6 @@ public class FixtureMatchMapFragment extends Fragment {
                 .load(ServerApi.loadFixtureMatchMapImageUrl + teamId)
                 .asBitmap()
                 .thumbnail(0.5f)
-                //.error(R.drawable.image_not_found)
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new SimpleTarget<Bitmap>() {
@@ -72,9 +73,7 @@ public class FixtureMatchMapFragment extends Fragment {
 
                     @Override
                     public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        Toast.makeText(getActivity(), "Error during loading", Toast.LENGTH_LONG).show();
-                        //productImage.setImage(ImageSource.resource(R.drawable.image_not_found));
-                        //productImage.setZoomEnabled(false);
+                        imageNotAvailable.setVisibility(View.VISIBLE);
                     }
                 });
     }

@@ -28,10 +28,26 @@
         android:layout_height="1dp"
         android:background="#82ffffff" />
 
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:id="@+id/map_image"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary">
+
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+            android:id="@+id/map_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/image_not_available_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/image_not_available"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
 </LinearLayout>
