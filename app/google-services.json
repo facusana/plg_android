@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "205101206728",
+    "project_id": "perlagloria-1645c"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205101206728:android:7cfae2361286b9f0",
+        "android_client_info": {
+          "package_name": "com.perlagloria"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9P-cA-qDyWa6c0lKkNFUVydjDNxggejM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-78519165-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
