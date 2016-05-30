@@ -23,6 +23,14 @@
         android:textColor="@android:color/white" />
 
     <TextView
+        android:id="@+id/gamesPlayedTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@android:color/white" />
+
+    <TextView
         android:id="@+id/winsTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

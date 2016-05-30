@@ -77,6 +77,7 @@
 
     <!-- table columns name -->
     <string name="points">Pts</string>
+    <string name="gamesPlayed">PJ</string>
     <string name="wins">PG</string>
     <string name="ties">PE</string>
     <string name="losses">PP</string>

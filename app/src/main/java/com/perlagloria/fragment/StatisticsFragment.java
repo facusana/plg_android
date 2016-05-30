@@ -44,6 +44,7 @@ public class StatisticsFragment extends Fragment {
     private RelativeLayout tableWrapper;
     private TextView teamTVHeader;
     private TextView pointsTVHeader;
+    private TextView gamesPlayedTVHeader;
     private TextView winsTVHeader;
     private TextView tiesTVHeader;
     private TextView lossesTVHeader;
@@ -160,6 +161,7 @@ public class StatisticsFragment extends Fragment {
 
         teamTVHeader = (TextView) headerRow.findViewById(R.id.teamTVHeader);
         pointsTVHeader = (TextView) headerRow.findViewById(R.id.pointsTVHeader);
+        gamesPlayedTVHeader = (TextView) headerRow.findViewById(R.id.gamesPlayedTVHeader);
         winsTVHeader = (TextView) headerRow.findViewById(R.id.winsTVHeader);
         tiesTVHeader = (TextView) headerRow.findViewById(R.id.tiesTVHeader);
         lossesTVHeader = (TextView) headerRow.findViewById(R.id.lossesTVHeader);
@@ -168,6 +170,7 @@ public class StatisticsFragment extends Fragment {
 
         teamTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         pointsTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+        gamesPlayedTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         winsTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         tiesTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         lossesTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
@@ -180,6 +183,8 @@ public class StatisticsFragment extends Fragment {
             teamValue.setText(String.format("%d %s", (i + 1), statisticsArrayList.get(i).getName()));
             TextView pointsValue = (TextView) tableRow.findViewById(R.id.pointsTV);
             pointsValue.setText(String.valueOf(statisticsArrayList.get(i).getPoints()));
+            TextView gamesPlayedValue = (TextView) tableRow.findViewById(R.id.gamesPlayedTV);
+            gamesPlayedValue.setText(String.valueOf(statisticsArrayList.get(i).getGamesPlayed()));
             TextView winsValue = (TextView) tableRow.findViewById(R.id.winsTV);
             winsValue.setText(String.valueOf(statisticsArrayList.get(i).getWins()));
             TextView tiesValue = (TextView) tableRow.findViewById(R.id.tiesTV);
