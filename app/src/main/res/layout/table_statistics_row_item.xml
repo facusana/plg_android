@@ -1,80 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#BCBCC1"
+    android:background="@android:color/transparent"
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/teamTVHeader"
+        android:id="@+id/teamTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:maxWidth="140dp"
         android:singleLine="true"
-        android:text="@string/team"
-        android:textColor="#0C2642" />
+        android:textAllCaps="true"
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/pointsTVHeader"
+        android:id="@+id/pointsTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/points"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/gamesPlayedTVHeader"
+        android:id="@+id/gamesPlayedTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/gamesPlayed"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/winsTVHeader"
+        android:id="@+id/winsTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/wins"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/tiesTVHeader"
+        android:id="@+id/tiesTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/ties"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/lossesTVHeader"
+        android:id="@+id/lossesTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/losses"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/goalsForTVHeader"
+        android:id="@+id/goalsForTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/goalsFor"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/goalsAgainstTVHeader"
+        android:id="@+id/goalsAgainstTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/goalsAgainst"
-        android:textColor="#0C2642" />
+        android:textColor="@android:color/white" />
+
 </TableRow>

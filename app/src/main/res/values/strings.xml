@@ -66,17 +66,26 @@
     <!-- Map -->
     <string name="fixture_match_map">Mapa</string>
 
-    <!-- Scores -->
-    <string name="scores">Goleadores</string>
+    <!-- Scorers -->
+    <string name="scorers">Goleadores</string>
 
     <!-- Positions fragment -->
     <string name="positions_fragment_title">POSICIONES</string>
+
+    <!-- Scorers fragment -->
+    <string name="scorers_fragment_title">GOLEADORES</string>
 
     <!-- Fixture match map fragment -->
     <string name="fixture_match_map_fragment_title">MAPA DEL PREDIO</string>
 
     <!-- Team -->
     <string name="team">EQUIPO</string>
+
+    <!-- Player -->
+    <string name="player">JUGADOR</string>
+
+    <!-- Goals -->
+    <string name="goals">GOLES</string>
 
     <!-- Powered by on the splashscreen -->
     <string name="powered_by">Powered by</string>

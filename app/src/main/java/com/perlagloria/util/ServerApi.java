@@ -11,6 +11,7 @@ public class ServerApi {
     public static final String loadTeamUrl = serverHostUrl + "/team/getteams?divisionId=";
     public static final String loadFixtureMatchInfoUrl = serverHostUrl + "/fixturematch/getnextfixturematch?teamId=";
     public static final String loadStatisticsUrl = serverHostUrl + "/team/getpositionsteams?teamId=";
+    public static final String loadScorersUrl = serverHostUrl + "/division/getstrikers?teamId=";
     public static final String loadTeamImageUrl = serverHostUrl + "/team/getteamimage?teamId=";
     public static final String loadFixtureMatchMapImageUrl = serverHostUrl + "/fixturematch/getnextfixturematchmapimage?teamId=";
 }

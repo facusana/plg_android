@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#BCBCC1"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/playerTVHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/player"
+        android:textColor="#0C2642" />
+
+    <TextView
+        android:id="@+id/teamTVHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/team"
+        android:textColor="#0C2642" />
+
+    <TextView
+        android:id="@+id/goalsTVHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/goals"
+        android:textColor="#0C2642" />
+</TableRow>

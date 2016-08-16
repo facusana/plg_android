@@ -114,6 +114,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     private boolean parseStatisticsJson(JSONArray response) {
+        statisticsArrayList.clear();
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject obj = response.getJSONObject(i);
@@ -154,7 +155,7 @@ public class StatisticsFragment extends Fragment {
 
     @SuppressLint("DefaultLocale")
     private void fillTable() {
-        final TableRow headerRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_header_item, null);
+        final TableRow headerRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_statistics_header_item, null);
         table.addView(headerRow);
 
         teamTVHeader = (TextView) headerRow.findViewById(R.id.teamTVHeader);
@@ -176,7 +177,7 @@ public class StatisticsFragment extends Fragment {
         goalsAgainstTVHeader.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
 
         for (int i = 0; i < statisticsArrayList.size(); i++) {
-            TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_row_item, null);
+            TableRow tableRow = (TableRow) getActivity().getLayoutInflater().inflate(R.layout.table_statistics_row_item, null);
             TextView teamValue = (TextView) tableRow.findViewById(R.id.teamTV);
             teamValue.setText(String.format("%d %s", (i + 1), statisticsArrayList.get(i).getName()));
             TextView pointsValue = (TextView) tableRow.findViewById(R.id.pointsTV);

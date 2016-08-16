@@ -50,9 +50,13 @@ public class TeamFragment extends Fragment implements
         fixtureMatchInfoFragment.setServerResponseListener(this);
         fixtureMatchInfoFragment.setServerRequestListener(this);
 
+        ScorersFragment scorersFragment = new ScorersFragment();
+        scorersFragment.setServerResponseListener(this);
+        scorersFragment.setServerRequestListener(this);
+
         adapter.addFragment(statisticsFragment, getString(R.string.positions));
         adapter.addFragment(fixtureMatchInfoFragment, getString(R.string.sport_event));
-        adapter.addFragment(new FixtureMatchMapFragment(), getString(R.string.scores));
+        adapter.addFragment(scorersFragment, getString(R.string.scorers));
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
     }
@@ -74,9 +78,9 @@ public class TeamFragment extends Fragment implements
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabThree.setText(getString(R.string.scores));
+        tabThree.setText(getString(R.string.scorers));
         tabThree.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_scores_icon, 0, 0);
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_scorers_icon, 0, 0);
         tabThree.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
         tabLayout.getTabAt(2).setCustomView(tabThree);
     }
