@@ -78,20 +78,20 @@
     <!-- Fixture match map fragment -->
     <string name="fixture_match_map_fragment_title">MAPA DEL PREDIO</string>
 
-    <!-- Team -->
-    <string name="team">EQUIPO</string>
-
-    <!-- Player -->
-    <string name="player">JUGADOR</string>
-
-    <!-- Goals -->
-    <string name="goals">GOLES</string>
-
     <!-- Powered by on the splashscreen -->
     <string name="powered_by">Powered by</string>
 
     <!-- Image not available -->
     <string name="image_not_available">Imagen no disponible</string>
+
+    <!-- Please wait -->
+    <string name="please_wait">Por favor espera</string>
+
+    <!-- Loading coordinates -->
+    <string name="loading_coordinates">Coordenadas de carga</string>
+
+    <!-- Google Maps is not found -->
+    <string name="google_maps_not_found">Google Maps no se encuentra</string>
 
     <!-- table columns name -->
     <string name="points">Pts</string>
@@ -101,5 +101,9 @@
     <string name="losses">PP</string>
     <string name="goalsFor">GF</string>
     <string name="goalsAgainst">GC</string>
+
+    <string name="team">EQUIPO</string>
+    <string name="player">JUGADOR</string>
+    <string name="goals">GOLES</string>
 
 </resources>

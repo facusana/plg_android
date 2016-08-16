@@ -1,10 +1,12 @@
 package com.perlagloria.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +19,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -32,10 +39,14 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.perlagloria.R;
 import com.perlagloria.fragment.AboutUsFragment;
 import com.perlagloria.fragment.TeamFragment;
+import com.perlagloria.util.AppController;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
 import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -129,7 +140,7 @@ public class TeamActivity extends AppCompatActivity {
                 .withHeaderDivider(false)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(R.string.statistics).withIcon(R.drawable.ic_navdrawer_statistics).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_STATISTICS_ID),
-                        new PrimaryDrawerItem().withName(R.string.how_to_get).withIcon(R.drawable.ic_navdrawer_direction).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_DIRECTION_ID),
+                        new PrimaryDrawerItem().withName(R.string.how_to_get).withIcon(R.drawable.ic_navdrawer_direction).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_DIRECTION_ID).withSelectable(false),
                         new DividerDrawerItem(),
                         new SecondaryDrawerItem().withName(R.string.about_us).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_ABOUT_ID)
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -140,6 +151,50 @@ public class TeamActivity extends AppCompatActivity {
                                 setNextActiveFragment(new TeamFragment());
                                 break;
                             case NAV_DRAWER_DIRECTION_ID:
+                                SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
+                                int savedTeamId = sPref.getInt(SharedPreferenceKey.TEAM_ID, -1);
+
+                                final ProgressDialog progressDialog = new ProgressDialog(TeamActivity.this);
+                                progressDialog.setTitle(R.string.please_wait);
+                                progressDialog.setMessage(getString(R.string.loading_coordinates));
+
+                                JsonObjectRequest coordinatesJsonRequest = new JsonObjectRequest(ServerApi.direction + savedTeamId,
+                                        null,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                VolleyLog.d("coordinates_loading", response.toString());
+                                                progressDialog.dismiss();
+
+                                                try {
+                                                    Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", response.getString("latitude"), response.getString("longitude")));
+                                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                                                        startActivity(mapIntent);
+                                                    } else {
+                                                        Toast.makeText(TeamActivity.this, R.string.google_maps_not_found, Toast.LENGTH_LONG).show();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                    ErrorAlertDialog.show(TeamActivity.this, ErrorAlertDialog.NO_INFO_FROM_SERVER);
+                                                }
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                VolleyLog.d("coordinates_loading", "Error: " + error.getMessage());
+                                                progressDialog.dismiss();
+
+                                                ErrorAlertDialog.show(TeamActivity.this, ErrorAlertDialog.getVolleyErrorMessage(error));
+                                            }
+                                        }
+                                );
+
+                                progressDialog.show();
+                                AppController.getInstance().addToRequestQueue(coordinatesJsonRequest, "coordinates_loading"); // Adding request to request queue
+
                                 break;
                             case NAV_DRAWER_ABOUT_ID:
                                 setNextActiveFragment(new AboutUsFragment());
