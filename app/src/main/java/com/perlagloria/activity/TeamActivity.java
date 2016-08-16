@@ -15,8 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -27,6 +33,7 @@ import com.perlagloria.R;
 import com.perlagloria.fragment.TeamFragment;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
+import com.perlagloria.util.ServerApi;
 import com.perlagloria.util.SharedPreferenceKey;
 
 public class TeamActivity extends AppCompatActivity {
@@ -71,6 +78,42 @@ public class TeamActivity extends AppCompatActivity {
     }
 
     private void initNavigationDrawer(Toolbar toolbar, Bundle savedInstanceState) {
+        SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
+
+        View header = getLayoutInflater().inflate(R.layout.header_nav_drawer, null);
+        header.setPadding(header.getPaddingLeft(), header.getPaddingTop() + getStatusBarHeight(), header.getPaddingRight(), header.getPaddingBottom());
+
+        TextView headerText = (TextView) header.findViewById(R.id.header_text);
+        headerText.setText(sPref.getString(SharedPreferenceKey.TEAM_NAME, "").toUpperCase());
+        headerText.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this));
+        final ImageView headerIcon = (ImageView) header.findViewById(R.id.header_icon);
+        int savedTeamId = sPref.getInt(SharedPreferenceKey.TEAM_ID, -1);
+        if (savedTeamId != -1) {
+            Glide.with(headerIcon.getContext())
+                    .load(ServerApi.loadCustomerImageByTeamIdUrl + savedTeamId)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            headerIcon.setImageResource(R.drawable.ic_team);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(headerIcon);
+
+        } else {
+            //load default image
+            headerIcon.setImageResource(R.drawable.ic_team);
+        }
+
         navigationDrawer = new DrawerBuilder()
                 .withActivity(this)
                 //.withRootView(R.id.drawer_container)
@@ -81,11 +124,13 @@ public class TeamActivity extends AppCompatActivity {
                 .withFireOnInitialOnClick(true)
                 .withSavedInstance(savedInstanceState)
                 .withHasStableIds(true)
+                .withHeader(header)
+                .withHeaderDivider(false)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("aa").withIdentifier(NAV_DRAWER_STATISTICS_ID),
-                        new PrimaryDrawerItem().withName("bb").withIdentifier(NAV_DRAWER_DIRECTION_ID),
+                        new PrimaryDrawerItem().withName(R.string.statistics).withIcon(R.drawable.ic_statistics).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_STATISTICS_ID),
+                        new PrimaryDrawerItem().withName(R.string.how_to_get).withIcon(R.drawable.ic_direction).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_DIRECTION_ID),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("cc").withIdentifier(NAV_DRAWER_ABOUT_ID)
+                        new SecondaryDrawerItem().withName(R.string.about_us).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_ABOUT_ID)
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -131,6 +176,15 @@ public class TeamActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override

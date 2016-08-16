@@ -51,6 +51,12 @@
     <!-- Statistics -->
     <string name="statistics">ESTADÍSTICAS</string>
 
+    <!-- How to get -->
+    <string name="how_to_get">¿CÓMO LLEGAR?</string>
+
+    <!-- About us -->
+    <string name="about_us">Quiénes somos</string>
+
     <!-- Positions -->
     <string name="positions">Posiciones</string>
 
