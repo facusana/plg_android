@@ -121,9 +121,8 @@ public class FixtureMatchInfoFragment extends Fragment {
                         serverRequestListener.onRequestFinished();
 
                         if (!parseFixtureMatchInfoJson(response)) { //case of response parse error
-                            //todo
                             //Toast.makeText(getActivity(), R.string.no_info_for_next_match, Toast.LENGTH_LONG).show();
-                            //setDummyData();
+                            setDummyData();
                         } else {
                             setData();
                         }
