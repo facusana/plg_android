@@ -54,6 +54,9 @@ public class StatisticsFragment extends Fragment {
     private int teamId;
     private ArrayList<Team> statisticsArrayList;
 
+    private ServerResponseErrorListener serverResponseErrorListener;
+    private ServerRequestListener serverRequestListener;
+
     public StatisticsFragment() {
         // Required empty public constructor
     }
@@ -80,20 +83,17 @@ public class StatisticsFragment extends Fragment {
 
     private void loadStatisticsInfo() {
         String loadStatisticsUrl = ServerApi.loadStatisticsUrl + teamId;
-        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-        requestResponder.onRequestStarted();
+        serverRequestListener.onRequestStarted();
 
         JsonArrayRequest statisticsJsonRequest = new JsonArrayRequest(loadStatisticsUrl,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         VolleyLog.d(LOADING_STATISTICS_TAG, response.toString());
-                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-                        requestResponder.onRequestFinished();
+                        serverRequestListener.onRequestFinished();
 
                         if (!parseStatisticsJson(response)) {                                        //case of response parse error
-                            ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
-                            responseResponder.onServerResponseError(ErrorAlertDialog.NO_INFO_FROM_SERVER);
+                            serverResponseErrorListener.onServerResponseError(ErrorAlertDialog.NO_INFO_FROM_SERVER);
                         } else {
                             fillTable();
                         }
@@ -103,11 +103,9 @@ public class StatisticsFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_STATISTICS_TAG, "Error: " + error.getMessage());
-                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-                        requestResponder.onRequestFinished();
+                        serverRequestListener.onRequestFinished();
 
-                        ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
-                        responseResponder.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
+                        serverResponseErrorListener.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
                     }
                 }
         );
@@ -228,5 +226,13 @@ public class StatisticsFragment extends Fragment {
         };
 
         tableWrapper.addView(fakeHeaderView);
+    }
+
+    public void setServerResponseListener(ServerResponseErrorListener serverResponseErrorListener) {
+        this.serverResponseErrorListener = serverResponseErrorListener;
+    }
+
+    public void setServerRequestListener(ServerRequestListener serverRequestListener) {
+        this.serverRequestListener = serverRequestListener;
     }
 }

@@ -1,39 +1,43 @@
 package com.perlagloria.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.perlagloria.R;
-import com.perlagloria.adapter.TeamActivityViewPagerAdapter;
-import com.perlagloria.fragment.FixtureMatchInfoFragment;
-import com.perlagloria.fragment.FixtureMatchMapFragment;
-import com.perlagloria.fragment.StatisticsFragment;
-import com.perlagloria.responder.ServerRequestListener;
-import com.perlagloria.responder.ServerResponseErrorListener;
-import com.perlagloria.util.DimensionUtils;
+import com.perlagloria.fragment.TeamFragment;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
 import com.perlagloria.util.SharedPreferenceKey;
 
-public class TeamActivity extends AppCompatActivity implements
-        ServerResponseErrorListener,
-        ServerRequestListener {
+public class TeamActivity extends AppCompatActivity {
+
+    public static final int NAV_DRAWER_STATISTICS_ID = 1;
+    public static final int NAV_DRAWER_DIRECTION_ID = 2;
+    public static final int NAV_DRAWER_ABOUT_ID = 3;
 
     private TextView toolbarTitle;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+
+    private Drawer navigationDrawer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,47 +60,77 @@ public class TeamActivity extends AppCompatActivity implements
             setToolbarTitle(sPref.getString(SharedPreferenceKey.TEAM_NAME, ""));
         }
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        if (tabLayout != null) {
-            tabLayout.setupWithViewPager(viewPager);
-            setupTabIcons();
-        }
+        initNavigationDrawer(mainToolbar, savedInstanceState);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        TeamActivityViewPagerAdapter adapter = new TeamActivityViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new StatisticsFragment(), getString(R.string.positions));
-        adapter.addFragment(new FixtureMatchInfoFragment(), getString(R.string.sport_event));
-        adapter.addFragment(new FixtureMatchMapFragment(), getString(R.string.fixture_match_map));
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //add the values which need to be saved from the drawer to the bundle
+        outState = navigationDrawer.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
-    private void setupTabIcons() {
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText(getString(R.string.positions));
-        tabOne.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_shield_icon, 0, 0);
-        tabOne.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
-        tabOne.setSelected(true);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
+    private void initNavigationDrawer(Toolbar toolbar, Bundle savedInstanceState) {
+        navigationDrawer = new DrawerBuilder()
+                .withActivity(this)
+                //.withRootView(R.id.drawer_container)
+                .withToolbar(toolbar)
+                .withDisplayBelowStatusBar(false)
+                .withActionBarDrawerToggleAnimated(false)
+                .withSelectedItem(NAV_DRAWER_STATISTICS_ID)
+                .withFireOnInitialOnClick(true)
+                .withSavedInstance(savedInstanceState)
+                .withHasStableIds(true)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("aa").withIdentifier(NAV_DRAWER_STATISTICS_ID),
+                        new PrimaryDrawerItem().withName("bb").withIdentifier(NAV_DRAWER_DIRECTION_ID),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withName("cc").withIdentifier(NAV_DRAWER_ABOUT_ID)
+                ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        switch ((int) drawerItem.getIdentifier()) {
+                            case NAV_DRAWER_STATISTICS_ID:
+                                setNextActiveFragment(new TeamFragment());
+                                break;
+                            case NAV_DRAWER_DIRECTION_ID:
+                                break;
+                            case NAV_DRAWER_ABOUT_ID:
+                                break;
+                        }
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText(getString(R.string.sport_event));
-        tabTwo.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_table_icon, 0, 0);
-        tabTwo.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+                        return false;
+                    }
+                })
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        //close soft keyboard while opening the navbar
+                        if (getCurrentFocus() != null) {
+                            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        }
+                    }
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabThree.setText(getString(R.string.fixture_match_map));
-        tabThree.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, this));
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_map_icon, 0, 0);
-        tabThree.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                    }
+
+                    @Override
+                    public void onDrawerSlide(View view, float v) {
+                    }
+                })
+                .build();
+    }
+
+    public void setNextActiveFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -124,54 +158,33 @@ public class TeamActivity extends AppCompatActivity implements
         toolbarTitle.setText(text.toUpperCase());
     }
 
-    private void showProgressBar() {
-//        if (progressBar != null) {
-//            tabFragmentContainer.setVisibility(View.INVISIBLE);
-//            progressBar.setVisibility(View.VISIBLE);
-//        }
-    }
-
-    private void hideProgressBar() {
-//        if (progressBar != null) {
-//            tabFragmentContainer.setVisibility(View.VISIBLE);
-//            progressBar.setVisibility(View.GONE);
-//        }
-    }
-
-    @Override
-    public void onServerResponseError(String message) {
-        ErrorAlertDialog.show(TeamActivity.this, message);
-    }
-
-    @Override
-    public void onRequestStarted() {
-        showProgressBar();
-    }
-
-    @Override
-    public void onRequestFinished() {
-        hideProgressBar();
-    }
-
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        ErrorAlertDialog.show(TeamActivity.this,
-                getString(R.string.sure_exit_dialog),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //stub
-                    }
-                },
-                getString(R.string.sure_exit_dialog_no),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                    }
-                },
-                getString(R.string.sure_exit_dialog_yes));
+        int count = getFragmentManager().getBackStackEntryCount();
+        //handle the back press, close the drawer first and if the drawer is closed close the activity
+        if (navigationDrawer != null && navigationDrawer.isDrawerOpen()) {
+            navigationDrawer.closeDrawer();
+        } else if (count == 0) {
+            //super.onBackPressed();
+            ErrorAlertDialog.show(TeamActivity.this,
+                    getString(R.string.sure_exit_dialog),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //stub
+                        }
+                    },
+                    getString(R.string.sure_exit_dialog_no),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            System.exit(0);
+                        }
+                    },
+                    getString(R.string.sure_exit_dialog_yes));
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

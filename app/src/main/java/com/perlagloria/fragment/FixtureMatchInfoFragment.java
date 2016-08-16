@@ -58,6 +58,9 @@ public class FixtureMatchInfoFragment extends Fragment {
 
     private FixtureMatchInfo fixtureMatchInfo;
 
+    private ServerResponseErrorListener serverResponseErrorListener;
+    private ServerRequestListener serverRequestListener;
+
     public FixtureMatchInfoFragment() {
         // Required empty public constructor
     }
@@ -96,8 +99,7 @@ public class FixtureMatchInfoFragment extends Fragment {
 
     private void loadFixtureMatchInfo() {
         String loadFixtureMatchInfoUrl = ServerApi.loadFixtureMatchInfoUrl + teamId;
-        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-        requestResponder.onRequestStarted();
+        serverRequestListener.onRequestStarted();
 
         JsonObjectRequest fixtureMatchInfoJsonRequest = new JsonObjectRequest(loadFixtureMatchInfoUrl,
                 null,
@@ -105,8 +107,7 @@ public class FixtureMatchInfoFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         VolleyLog.d(LOADING_FIXTURE_MATCH_TAG, response.toString());
-                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-                        requestResponder.onRequestFinished();
+                        serverRequestListener.onRequestFinished();
 
                         if (!parseFixtureMatchInfoJson(response)) { //case of response parse error
                             Toast.makeText(getActivity(), R.string.no_info_for_next_match, Toast.LENGTH_LONG).show();
@@ -120,11 +121,9 @@ public class FixtureMatchInfoFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(LOADING_FIXTURE_MATCH_TAG, "Error: " + error.getMessage());
-                        ServerRequestListener requestResponder = (ServerRequestListener) getActivity();
-                        requestResponder.onRequestFinished();
+                        serverRequestListener.onRequestFinished();
 
-                        ServerResponseErrorListener responseResponder = (ServerResponseErrorListener) getActivity();
-                        responseResponder.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
+                        serverResponseErrorListener.onServerResponseError(ErrorAlertDialog.getVolleyErrorMessage(error));
                     }
                 }
         );
@@ -286,5 +285,13 @@ public class FixtureMatchInfoFragment extends Fragment {
         dateOfMatchTV.setText("");
         timeOfMatchTV.setText("");
         fieldNumberTV.setText("");
+    }
+
+    public void setServerResponseListener(ServerResponseErrorListener serverResponseErrorListener) {
+        this.serverResponseErrorListener = serverResponseErrorListener;
+    }
+
+    public void setServerRequestListener(ServerRequestListener serverRequestListener) {
+        this.serverRequestListener = serverRequestListener;
     }
 }
