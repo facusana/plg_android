@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,6 +204,26 @@ public class StatisticsFragment extends Fragment {
             lossesValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             goalForValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             goalAgainstValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+
+            if (teamId == statisticsArrayList.get(i).getId()) {
+                tableRow.setBackgroundColor(Color.WHITE);
+                teamValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                pointsValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                winsValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                tiesValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                lossesValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                goalForValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                goalAgainstValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+            } else {
+                tableRow.setBackgroundColor(Color.TRANSPARENT);
+                teamValue.setTextColor(Color.WHITE);
+                pointsValue.setTextColor(Color.WHITE);
+                winsValue.setTextColor(Color.WHITE);
+                tiesValue.setTextColor(Color.WHITE);
+                lossesValue.setTextColor(Color.WHITE);
+                goalForValue.setTextColor(Color.WHITE);
+                goalAgainstValue.setTextColor(Color.WHITE);
+            }
 
             table.addView(tableRow);
         }

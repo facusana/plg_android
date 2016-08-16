@@ -10,5 +10,6 @@
 
     <color name="colorSelectedItem">#0365c0</color>
     <color name="colorUnselectedItem">#898989</color>
+    <color name="colorSelectedTeam">#e8aa25</color>
 
 </resources>
