@@ -199,6 +199,7 @@ public class StatisticsFragment extends Fragment {
 
             teamValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             pointsValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
+            gamesPlayedValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             winsValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             tiesValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
             lossesValue.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
@@ -209,6 +210,7 @@ public class StatisticsFragment extends Fragment {
                 tableRow.setBackgroundColor(Color.WHITE);
                 teamValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
                 pointsValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
+                gamesPlayedValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
                 winsValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
                 tiesValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
                 lossesValue.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSelectedTeam));
@@ -218,6 +220,7 @@ public class StatisticsFragment extends Fragment {
                 tableRow.setBackgroundColor(Color.TRANSPARENT);
                 teamValue.setTextColor(Color.WHITE);
                 pointsValue.setTextColor(Color.WHITE);
+                gamesPlayedValue.setTextColor(Color.WHITE);
                 winsValue.setTextColor(Color.WHITE);
                 tiesValue.setTextColor(Color.WHITE);
                 lossesValue.setTextColor(Color.WHITE);
