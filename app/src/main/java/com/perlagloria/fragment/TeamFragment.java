@@ -41,7 +41,7 @@ public class TeamFragment extends Fragment implements
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        TeamActivityViewPagerAdapter adapter = new TeamActivityViewPagerAdapter(getActivity().getSupportFragmentManager());
+        TeamActivityViewPagerAdapter adapter = new TeamActivityViewPagerAdapter(getChildFragmentManager());
         StatisticsFragment statisticsFragment = new StatisticsFragment();
         statisticsFragment.setServerResponseListener(this);
         statisticsFragment.setServerRequestListener(this);

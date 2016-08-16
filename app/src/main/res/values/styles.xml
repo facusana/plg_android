@@ -24,7 +24,7 @@
         <item name="material_drawer_secondary_text">#FFFFFF</item>
         <item name="material_drawer_hint_text">@color/material_drawer_dark_hint_text</item>
         <item name="material_drawer_divider">#878991</item>
-        <item name="material_drawer_selected">#9c9c9e</item>
+        <item name="material_drawer_selected">#898989</item>
         <item name="material_drawer_selected_text">#FFFFFF</item>
         <item name="material_drawer_header_selection_text">
             @color/material_drawer_dark_primary_text
