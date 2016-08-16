@@ -30,6 +30,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.perlagloria.R;
+import com.perlagloria.fragment.AboutUsFragment;
 import com.perlagloria.fragment.TeamFragment;
 import com.perlagloria.util.ErrorAlertDialog;
 import com.perlagloria.util.FontManager;
@@ -141,6 +142,7 @@ public class TeamActivity extends AppCompatActivity {
                             case NAV_DRAWER_DIRECTION_ID:
                                 break;
                             case NAV_DRAWER_ABOUT_ID:
+                                setNextActiveFragment(new AboutUsFragment());
                                 break;
                         }
 
