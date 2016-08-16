@@ -98,7 +98,7 @@ public class TeamActivity extends AppCompatActivity {
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            headerIcon.setImageResource(R.drawable.ic_team);
+                            headerIcon.setImageResource(R.drawable.ic_navdrawer_team);
                             return false;
                         }
 
@@ -111,7 +111,7 @@ public class TeamActivity extends AppCompatActivity {
 
         } else {
             //load default image
-            headerIcon.setImageResource(R.drawable.ic_team);
+            headerIcon.setImageResource(R.drawable.ic_navdrawer_team);
         }
 
         navigationDrawer = new DrawerBuilder()
@@ -127,8 +127,8 @@ public class TeamActivity extends AppCompatActivity {
                 .withHeader(header)
                 .withHeaderDivider(false)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.statistics).withIcon(R.drawable.ic_statistics).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_STATISTICS_ID),
-                        new PrimaryDrawerItem().withName(R.string.how_to_get).withIcon(R.drawable.ic_direction).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_DIRECTION_ID),
+                        new PrimaryDrawerItem().withName(R.string.statistics).withIcon(R.drawable.ic_navdrawer_statistics).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_STATISTICS_ID),
+                        new PrimaryDrawerItem().withName(R.string.how_to_get).withIcon(R.drawable.ic_navdrawer_direction).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_DIRECTION_ID),
                         new DividerDrawerItem(),
                         new SecondaryDrawerItem().withName(R.string.about_us).withTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_MEDIUM, this)).withIdentifier(NAV_DRAWER_ABOUT_ID)
                 ).withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {

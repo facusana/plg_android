@@ -66,6 +66,9 @@
     <!-- Map -->
     <string name="fixture_match_map">Mapa</string>
 
+    <!-- Scores -->
+    <string name="scores">Goleadores</string>
+
     <!-- Positions fragment -->
     <string name="positions_fragment_title">POSICIONES</string>
 

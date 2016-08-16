@@ -20,7 +20,7 @@
         android:paddingRight="@dimen/material_drawer_item_primary_icon_padding_right"
         android:paddingStart="0dp"
         android:paddingTop="@dimen/material_drawer_item_primary_icon_padding"
-        android:src="@drawable/ic_team" />
+        android:src="@drawable/ic_navdrawer_team" />
 
     <LinearLayout
         android:layout_width="0dp"

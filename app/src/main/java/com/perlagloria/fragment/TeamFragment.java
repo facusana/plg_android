@@ -52,7 +52,7 @@ public class TeamFragment extends Fragment implements
 
         adapter.addFragment(statisticsFragment, getString(R.string.positions));
         adapter.addFragment(fixtureMatchInfoFragment, getString(R.string.sport_event));
-        adapter.addFragment(new FixtureMatchMapFragment(), getString(R.string.fixture_match_map));
+        adapter.addFragment(new FixtureMatchMapFragment(), getString(R.string.scores));
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
     }
@@ -61,7 +61,7 @@ public class TeamFragment extends Fragment implements
         TextView tabOne = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabOne.setText(getString(R.string.positions));
         tabOne.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_shield_icon, 0, 0);
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_positions_icon, 0, 0);
         tabOne.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
         tabOne.setSelected(true);
         tabLayout.getTabAt(0).setCustomView(tabOne);
@@ -69,14 +69,14 @@ public class TeamFragment extends Fragment implements
         TextView tabTwo = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabTwo.setText(getString(R.string.sport_event));
         tabTwo.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_table_icon, 0, 0);
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_fixture_icon, 0, 0);
         tabTwo.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         TextView tabThree = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabThree.setText(getString(R.string.fixture_match_map));
+        tabThree.setText(getString(R.string.scores));
         tabThree.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_map_icon, 0, 0);
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.selector_tab_scores_icon, 0, 0);
         tabThree.setCompoundDrawablePadding((int) DimensionUtils.convertDpToPixel(3));
         tabLayout.getTabAt(2).setCustomView(tabThree);
     }
