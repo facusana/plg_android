@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.FixtureMatchMapFragment">
+    tools:context=".activity.FixtureMatchMapActivity">
+
+    <include
+        android:id="@+id/mainToolbar"
+        layout="@layout/toolbar" />
 
     <View
         android:layout_width="match_parent"
@@ -46,6 +50,14 @@
             android:text="@string/image_not_available"
             android:textColor="@color/white"
             android:textSize="22sp"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/map_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
             android:visibility="gone" />
 
     </RelativeLayout>

@@ -2,6 +2,7 @@ package com.perlagloria.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.perlagloria.R;
+import com.perlagloria.activity.FixtureMatchMapActivity;
 import com.perlagloria.model.Division;
 import com.perlagloria.model.FixtureDate;
 import com.perlagloria.model.FixtureMatchInfo;
@@ -55,6 +56,7 @@ public class FixtureMatchInfoFragment extends Fragment {
     private TextView dateOfMatchTV;
     private TextView timeOfMatchTV;
     private TextView fieldNumberTV;
+    private ImageView mapIcon;
 
     private FixtureMatchInfo fixtureMatchInfo;
 
@@ -79,6 +81,7 @@ public class FixtureMatchInfoFragment extends Fragment {
         dateOfMatchTV = (TextView) rootView.findViewById(R.id.dateOfMatchTV);
         timeOfMatchTV = (TextView) rootView.findViewById(R.id.timeOfMatchTV);
         fieldNumberTV = (TextView) rootView.findViewById(R.id.fieldNumberTV);
+        mapIcon = (ImageView) rootView.findViewById(R.id.map_icon);
 
         nextgameTitle.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_LIGHT, getActivity()));
         dateNumberTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
@@ -88,6 +91,14 @@ public class FixtureMatchInfoFragment extends Fragment {
         dateOfMatchTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         timeOfMatchTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
         fieldNumberTV.setTypeface(FontManager.getInstance().getFont(FontManager.Fonts.HELVETICA_NEUE_BOLD, getActivity()));
+
+        mapIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FixtureMatchMapActivity.class);
+                startActivity(intent);
+            }
+        });
 
         SharedPreferences sPref = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
         teamId = sPref.getInt(SharedPreferenceKey.TEAM_ID, -1);
@@ -110,8 +121,9 @@ public class FixtureMatchInfoFragment extends Fragment {
                         serverRequestListener.onRequestFinished();
 
                         if (!parseFixtureMatchInfoJson(response)) { //case of response parse error
-                            Toast.makeText(getActivity(), R.string.no_info_for_next_match, Toast.LENGTH_LONG).show();
-                            setDummyData();
+                            //todo
+                            //Toast.makeText(getActivity(), R.string.no_info_for_next_match, Toast.LENGTH_LONG).show();
+                            //setDummyData();
                         } else {
                             setData();
                         }
@@ -129,7 +141,6 @@ public class FixtureMatchInfoFragment extends Fragment {
         );
 
         AppController.getInstance().addToRequestQueue(fixtureMatchInfoJsonRequest, LOADING_FIXTURE_MATCH_TAG); // Adding request to request queue
-
     }
 
     private boolean parseFixtureMatchInfoJson(JSONObject response) {
@@ -285,6 +296,7 @@ public class FixtureMatchInfoFragment extends Fragment {
         dateOfMatchTV.setText("");
         timeOfMatchTV.setText("");
         fieldNumberTV.setText("");
+        mapIcon.setVisibility(View.GONE);
     }
 
     public void setServerResponseListener(ServerResponseErrorListener serverResponseErrorListener) {
