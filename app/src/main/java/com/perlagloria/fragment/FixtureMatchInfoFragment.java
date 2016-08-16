@@ -226,7 +226,8 @@ public class FixtureMatchInfoFragment extends Fragment {
                     response.getString("hour"),
                     homeGoals,
                     awayGoals,
-                    response.getString("mapCode"));
+                    response.getString("mapCode"),
+                    response.getString("heading"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -238,6 +239,8 @@ public class FixtureMatchInfoFragment extends Fragment {
 
     private void setData() { //throws ParseException {
         try {
+            nextgameTitle.setText(fixtureMatchInfo.getHeading());
+
             Glide.with(team1LogoImgView.getContext())
                     .load(ServerApi.loadTeamImageUrl + fixtureMatchInfo.getHomeTeam().getId())
                     .thumbnail(0.5f)

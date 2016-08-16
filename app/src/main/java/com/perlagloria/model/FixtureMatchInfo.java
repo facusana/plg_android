@@ -11,9 +11,10 @@ public class FixtureMatchInfo {
     private String homeGoals;
     private String awayGoals;
     private String mapCode;
+    private String heading;
 
     public FixtureMatchInfo(int id, FixtureDate fixtureDate, Team homeTeam, Team awayTeam, String lastUpdateDate,
-                            String fieldNumber, String hour, String homeGoals, String awayGoals, String mapCode) {
+                            String fieldNumber, String hour, String homeGoals, String awayGoals, String mapCode, String heading) {
         this.id = id;
         this.fixtureDate = fixtureDate;
         this.homeTeam = homeTeam;
@@ -24,6 +25,7 @@ public class FixtureMatchInfo {
         this.homeGoals = homeGoals;
         this.awayGoals = awayGoals;
         this.mapCode = mapCode;
+        this.heading = heading;
     }
 
     public int getId() {
@@ -114,5 +116,13 @@ public class FixtureMatchInfo {
     public FixtureMatchInfo setMapCode(String mapCode) {
         this.mapCode = mapCode;
         return this;
+    }
+
+    public String getHeading() {
+        return heading;
+    }
+
+    public void setHeading(String heading) {
+        this.heading = heading;
     }
 }
