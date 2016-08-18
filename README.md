@@ -1,4 +1,4 @@
-# Perlagloria 2.3.1
+# Perlagloria 2.9.0
 This project is based on building part of a mobile app for amateur sport players.
 The app should display a set of data to the users (players). In this part we need the following requirements built:
 1. Favorite team selection
