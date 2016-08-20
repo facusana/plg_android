@@ -93,7 +93,9 @@ public class TeamActivity extends AppCompatActivity {
         SharedPreferences sPref = getSharedPreferences("config", Context.MODE_PRIVATE);
 
         View header = getLayoutInflater().inflate(R.layout.header_nav_drawer, null);
-        header.setPadding(header.getPaddingLeft(), header.getPaddingTop() + getStatusBarHeight(), header.getPaddingRight(), header.getPaddingBottom());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {   //add extra padding for android 5.0+
+            header.setPadding(header.getPaddingLeft(), header.getPaddingTop() + getStatusBarHeight(), header.getPaddingRight(), header.getPaddingBottom());
+        }
 
         TextView headerText = (TextView) header.findViewById(R.id.header_text);
         headerText.setText(sPref.getString(SharedPreferenceKey.TEAM_NAME, "").toUpperCase());
