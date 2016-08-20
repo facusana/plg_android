@@ -72,6 +72,11 @@ public class AboutUsFragment extends Fragment {
             }
         });
 
+        webView.clearCache(true);
+        webView.clearHistory();
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
         webView.loadUrl(ServerApi.aboutUs);
 
         return rootView;
